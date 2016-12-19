@@ -27,6 +27,7 @@ namespace _2016RPGTeamWork.Scene
                 { "title", path },
                 { "gameplay", path },
                 { "battle", path },
+                { "puddle", path },
             };
             return list;
         }

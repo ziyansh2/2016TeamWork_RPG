@@ -1,4 +1,11 @@
-﻿using System;
+﻿///作成日：2016.12.19
+///作成者：岡本
+///作成内容：入力管理クラス
+///最後修正内容：注釈追加
+///最後修正者：柏
+///最後修正日：2016.12.19
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,8 +42,8 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// キーとパッドの押下チェック
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="button"></param>
+        /// <param name="key">キーボタン</param>
+        /// <param name="button">パッドボタン</param>
         /// <returns></returns>
         public bool CheckDownKey(Keys key, Buttons button)
         {
@@ -95,7 +102,7 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// キー状態の更新
         /// </summary>
-        /// <param name="keyState"></param>
+        /// <param name="keyState">キーボタンの状態</param>
         private void UpdateKey(KeyboardState keyState)
         {
             //1フレーム前のキーに現在のキーを
@@ -107,7 +114,7 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// パッド状態の更新
         /// </summary>
-        /// <param name="buttonState"></param>
+        /// <param name="buttonState">パッドボタンの状態</param>
         private void UpdatePad(GamePadState buttonState)
         {
             previousPad = currentPad;
@@ -117,7 +124,7 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 押されたのか？（キーボード版）
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">キーボタン</param>
         /// <returns></returns>
         public bool IsKeyDown(Keys key)
         {
@@ -129,7 +136,7 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 押されたのか？（パッド版）
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="button">パッドボタン</param>
         /// <returns></returns>
         public bool IsKeyDown(Buttons button)
         {
@@ -141,7 +148,7 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 押されたのか？（トリガー判定：キーボード版）
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">キーボタン</param>
         /// <returns></returns>
         public bool GetKeyTrigger(Keys key)
         {
@@ -150,13 +157,16 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 押されたのか？（ステート判定：パッド版）
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="button">パッドボタン</param>
         /// <returns></returns>
         public bool GetKeyState(Buttons button)
         {
             return currentPad.IsButtonDown(button);
         }
 
+        /// <summary>
+        /// 更新
+        /// </summary>
         public void Update()
         {
             //キーボード処理

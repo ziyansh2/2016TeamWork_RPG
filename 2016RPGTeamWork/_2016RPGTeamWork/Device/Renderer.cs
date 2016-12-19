@@ -1,4 +1,11 @@
-﻿using System;
+﻿///作成日：2016.12.19
+///作成者：岡本
+///作成内容：描画管理クラス
+///最後修正内容：注釈追加、バグ修正
+///最後修正者：柏
+///最後修正日：2016.12.19
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,30 +19,28 @@ namespace _2016RPGTeamWork.Device
     class Renderer
     {
         private ContentManager contentManager;
-        private GraphicsDevice graphicsDevice;
         private SpriteBatch spriteBatch;
 
         //複数画像管理
-        private Dictionary<string, Texture2D> textures =
-            new Dictionary<string, Texture2D>();
+        private Dictionary<string, Texture2D> textures;   //初期化位置調整　by柏　2016.12.19
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="content"></param>
-        /// <param name="graphics"></param>
+        /// <param name="content">内容管理デバイス</param>
+        /// <param name="graphics">画像管理デバイス</param>
         public Renderer(ContentManager content, GraphicsDevice graphics)
         {
+            textures = new Dictionary<string, Texture2D>();     //初期化位置調整　by柏　2016.12.19
             contentManager = content;
-            graphicsDevice = graphics;
-            spriteBatch = new SpriteBatch(graphicsDevice);
+            spriteBatch = new SpriteBatch(graphics);
         }
 
         /// <summary>
         /// 画像の読み込み
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="filepath"></param>
+        /// <param name="name">ファイル名</param>
+        /// <param name="filepath">ファイルアドレス</param>
         public void LoadTexture(string name, string filepath = "./")
         {
             //ガード節
@@ -49,15 +54,14 @@ namespace _2016RPGTeamWork.Device
                 //処理終了
                 return;
             }
-            textures.Add(name, contentManager.Load<Texture2D>
-                (filepath + name));
+            textures.Add(name, contentManager.Load<Texture2D>(filepath + name));
         }
 
         /// <summary>
         /// 画像の登録
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="texture"></param>
+        /// <param name="name">ファイル名</param>
+        /// <param name="texture">画像</param>
         public void LoadTexture(string name, Texture2D texture)
         {
             if (textures.ContainsKey(name))
@@ -99,9 +103,9 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 画像の描画
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="position"></param>
-        /// <param name="alpha"></param>
+        /// <param name="name">ファイル名</param>
+        /// <param name="position">位置</param>
+        /// <param name="alpha">透明度</param>
         public void DrawTexture(string name, Vector2 position, float alpha = 1.0f)
         {
             Debug.Assert(
@@ -117,10 +121,10 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// 画像の描画（指定範囲）
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="position"></param>
-        /// <param name="rect"></param>
-        /// <param name="alpha"></param>
+        /// <param name="name">ファイル名</param>
+        /// <param name="position">位置</param>
+        /// <param name="rect">リソースの描画範囲</param>
+        /// <param name="alpha">透明度</param>
         public void DrawTexture(string name, Vector2 position, Rectangle rect, float alpha = 1.0f)
         {
             Debug.Assert(
@@ -140,10 +144,10 @@ namespace _2016RPGTeamWork.Device
         /// <summary>
         /// （拡大縮小対応版）画像の描画
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="position"></param>
-        /// <param name="scale"></param>
-        /// <param name="alpha"></param>
+        /// <param name="name">ファイル</param>
+        /// <param name="position">位置</param>
+        /// <param name="scale">大きさ</param>
+        /// <param name="alpha">透明度</param>
         public void DrawTexture(string name, Vector2 position, Vector2 scale, float alpha = 1.0f)
         {
             Debug.Assert(
@@ -198,13 +202,13 @@ namespace _2016RPGTeamWork.Device
         }
 
         /// <summary>
-        /// 数字の描画（詳細版：桁数指定）
+        /// 数字の描画（詳細版：桁数指定　＋　小数対応）
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="position"></param>
-        /// <param name="number"></param>
-        /// <param name="digit"></param>
-        /// <param name="alpha"></param>
+        /// <param name="name">ファイル</param>
+        /// <param name="position">位置</param>
+        /// <param name="number">描画したい数字</param>
+        /// <param name="digit">描画したい桁数</param>
+        /// <param name="alpha">透明度</param>
         public void DrawNumber(string name, Vector2 position, string number, int digit, float alpha = 1.0f)
         {
             Debug.Assert(
@@ -240,6 +244,14 @@ namespace _2016RPGTeamWork.Device
             }
         }
 
+        /// <summary>
+        /// 数字描画（桁数　＋　整数）
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <param name="position">位置</param>
+        /// <param name="number">描画したい数字</param>
+        /// <param name="digit">描画したい桁数</param>
+        /// <param name="alpha">透明度</param>
         public void DrawNumber(string name, Vector2 position, int number, int digit, float alpha = 1.0f)
         {
             Debug.Assert(textures.ContainsKey(name),

@@ -1,4 +1,10 @@
-﻿using System;
+﻿///作成日：2016.12.19
+///作成者：岡本
+///作成内容：MP3,WAV管理クラス
+///最後修正内容：注釈追加
+///最後修正日：柏
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +43,11 @@ namespace _2016RPGTeamWork.Device
             currentBGM = null;
         }
 
+        /// <summary>
+        /// エラーのメセッジ
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <returns></returns>
         private string ErrorMessage(string name)
         {
             return "再生する音データのアセット名（" + name + "）がありません\n" +
@@ -45,6 +56,11 @@ namespace _2016RPGTeamWork.Device
 
         #region BGM関連処理
 
+        /// <summary>
+        /// ＢＧＭファイル読込
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <param name="filepath">ファイルアドレス</param>
         public void LoadBGM(string name, string filepath = "./")
         {
             if (bgms.ContainsKey(name))
@@ -55,28 +71,48 @@ namespace _2016RPGTeamWork.Device
             bgms.Add(name, contentManager.Load<Song>(filepath + name));
         }
 
+        /// <summary>
+        /// ＢＧＭの再生が中止中かどうか
+        /// </summary>
+        /// <returns></returns>
         public bool IsStoppedBGM()
         {
             return (MediaPlayer.State == MediaState.Stopped);
         }
 
 
+        /// <summary>
+        /// ＢＧＭ再生中かどうか
+        /// </summary>
+        /// <returns></returns>
         public bool IsPlayingBGM()
         {
             return (MediaPlayer.State == MediaState.Playing);
         }
 
+        /// <summary>
+        /// ＢＧＭ再生一時停止
+        /// </summary>
+        /// <returns></returns>
         public bool IsPausedBGM()
         {
             return (MediaPlayer.State == MediaState.Paused);
         }
 
+        /// <summary>
+        /// ＢＧＭ再生中止
+        /// </summary>
         public void StopBGM()
         {
             MediaPlayer.Stop();
             currentBGM = null;
         }
 
+
+        /// <summary>
+        /// ＢＧＭ再生
+        /// </summary>
+        /// <param name="name"></param>
         public void PlayBGM(string name)
         {
             Debug.Assert(bgms.ContainsKey(name), ErrorMessage(name));
@@ -98,7 +134,10 @@ namespace _2016RPGTeamWork.Device
             MediaPlayer.Play(bgms[currentBGM]);
         }
 
-
+        /// <summary>
+        /// ＢＧＭの再生のループ設定
+        /// </summary>
+        /// <param name="loopFlag"></param>
         public void ChangeBGMLoopFlag(bool loopFlag)
         {
             MediaPlayer.IsRepeating = loopFlag;
@@ -108,6 +147,11 @@ namespace _2016RPGTeamWork.Device
 
         #region WAV関連
 
+        /// <summary>
+        /// ＳＥファイルを読み込み
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <param name="filepath">ファイルアドレス</param>
         public void LoadSE(string name, string filepath = "./")
         {
             if (soundEffects.ContainsKey(name))
@@ -118,6 +162,10 @@ namespace _2016RPGTeamWork.Device
             soundEffects.Add(name, contentManager.Load<SoundEffect>(filepath + name));
         }
 
+        /// <summary>
+        /// ＳＥの再生リストをニューする
+        /// </summary>
+        /// <param name="name">ファイル名</param>
         public void CreateSEInstance(string name)
         {
             if (seInstances.ContainsKey(name))
@@ -132,6 +180,10 @@ namespace _2016RPGTeamWork.Device
             seInstances.Add(name, soundEffects[name].CreateInstance());
         }
 
+        /// <summary>
+        /// ＳＥを再生
+        /// </summary>
+        /// <param name="name"></param>
         public void PlaySE(string name)
         {
             Debug.Assert(soundEffects.ContainsKey(name), ErrorMessage(name));
@@ -139,6 +191,11 @@ namespace _2016RPGTeamWork.Device
             soundEffects[name].Play();
         }
 
+        /// <summary>
+        /// ＳＥＬｉｓｔを再生
+        /// </summary>
+        /// <param name="name">ファイルめ</param>
+        /// <param name="loopFlag">ループ設定</param>
         public void PlaySEInstance(string name, bool loopFlag = false)
         {
             Debug.Assert(seInstances.ContainsKey(name), ErrorMessage(name));
@@ -150,6 +207,9 @@ namespace _2016RPGTeamWork.Device
 
         }
 
+        /// <summary>
+        /// ＳＥ再生中止
+        /// </summary>
         public void StoppedSE()
         {
             foreach (var se in sePlayList)
@@ -161,6 +221,9 @@ namespace _2016RPGTeamWork.Device
             }
         }
 
+        /// <summary>
+        /// ＳＥを一時停止
+        /// </summary>
         public void PauseSE()
         {
             foreach (var se in sePlayList)
@@ -172,6 +235,9 @@ namespace _2016RPGTeamWork.Device
             }
         }
 
+        /// <summary>
+        /// ＳＥを削除
+        /// </summary>
         public void RemoveSE()
         {
             sePlayList.RemoveAll(se => (se.State == SoundState.Stopped));
@@ -179,6 +245,9 @@ namespace _2016RPGTeamWork.Device
 
         #endregion
 
+        /// <summary>
+        /// 音声関連Ｌｉｓｔをクリア
+        /// </summary>
         public void Unload()
         {
             bgms.Clear();

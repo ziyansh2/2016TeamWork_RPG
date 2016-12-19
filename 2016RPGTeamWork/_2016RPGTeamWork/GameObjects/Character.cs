@@ -1,4 +1,10 @@
-﻿using System;
+﻿///作成日：2016.12.13
+///作成者：マイケル
+///作成内容：チャラパラメータ保存用クラス
+///最後修正内容：。。
+///最後修正日：。。
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

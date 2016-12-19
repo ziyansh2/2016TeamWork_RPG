@@ -92,6 +92,7 @@
     <Compile Include="GameObjects\EnemyManager\TrickManager_E.cs" />
     <Compile Include="GameObjects\EnemyManager\Trick_E.cs" />
     <Compile Include="GameObjects\EnemyManager\Trick_E_List\Trick1.cs" />
+    <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

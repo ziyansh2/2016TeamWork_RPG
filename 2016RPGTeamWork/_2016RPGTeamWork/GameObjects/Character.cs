@@ -1,9 +1,8 @@
 ﻿///作成日：2016.12.13
-///作成者：マイケル
-///作成内容：チャラパラメータ保存用クラス
-///最後修正内容：。。
-///最後修正日：。。
-
+///作成者：ホームズ
+///作成内容：キャラクターの抽象クラス
+///最後修正内容：マナポイントに範囲外の値を防ぐメソッドの追加、各メソッドに説明の追加
+///最後修正日：2016.12.19
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +36,22 @@ namespace _2016RPGTeamWork.GameObjects
             HpClip();
         }
 
+        /// <summary>
+        /// ヒットポイントが最大値を超えたり、ゼロより少なくなったりしないようにするメソッド
+        /// </summary>
         private void HpClip()
         {
             if (hp > MaxHP) hp = MaxHP;
             else if (hp < 0) hp = 0;
+        }
+
+        /// <summary>
+        /// マナポイントが最大値を超えたり、ゼロより少なくなったりしないようにするメソッド
+        /// </summary>
+        private void MpClip()
+        {
+            if (mp > MaxMP) mp = MaxMP;
+            else if (mp < 0) mp = 0;
         }
 
         public int MaxHP { get { return characterInfo.MaxHP; } }

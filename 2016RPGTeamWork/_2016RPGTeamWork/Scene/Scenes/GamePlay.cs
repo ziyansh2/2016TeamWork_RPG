@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ゲームプレーシーン
-///最後修正内容：。。
-///最後修正者：。。
-///最後修正日：。。
+///最後修正内容：Stageクラスを宣言して描画
+///最後修正者：柏
+///最後修正日：2016.12.20
 
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,13 @@ namespace _2016RPGTeamWork.Scene
         bool battleFlag;
         private InputState input;
         private Motion motion;      //アニメーション用
+        private Stage stage;    //2016.12.20 by柏　stage描画用
         public GamePlay(GameDevice gameDevice)
         {
             endFlag = false;
             battleFlag = false;
             input = gameDevice.GetInputState();
+            stage = new Stage();    //2016.12.20 by柏　stage描画用
             Initialize();
         }
 
@@ -37,30 +39,14 @@ namespace _2016RPGTeamWork.Scene
         {
             endFlag = false;
             battleFlag = false;
+            stage.Initialize();    //2016.12.20 by柏　stage描画用
 
             //アニメーション用クラスを生成してから初期化
             motion = new Motion();
             for (int i = 0; i < 6; i++) {
                 motion.Add(i, new Rectangle(64 * i, 0, 64, 64));
             }
-            motion.Initialize(new Range(0, 5), new Timer(0.2f));
-        }
-
-        /// <summary>
-        /// 次のシーンに行く
-        /// </summary>
-        /// <returns></returns>
-        public eScene ToNext()
-        {
-            return eScene.TITLE;
-        }
-
-        /// <summary>
-        /// バトルシーンに遷移
-        /// </summary>
-        /// <returns></returns>
-        public eScene ToBattle() {
-            return eScene.BATTLE;
+            motion.Initialize(new Range(0, 5), new Timer(0.1f));
         }
 
         /// <summary>
@@ -79,10 +65,29 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         /// <param name="renderer"></param>
         public void Draw(Renderer renderer) {
+            stage.Draw(renderer);    //2016.12.20 by柏　stage描画用
             renderer.DrawTexture("gameplay", Vector2.Zero);
             renderer.DrawTexture("puddle", Vector2.One * 550, motion.DrawRange());
         }
 
+
+        /// <summary>
+        /// 次のシーンに行く
+        /// </summary>
+        /// <returns></returns>
+        public eScene ToNext()
+        {
+            return eScene.TITLE;
+        }
+
+        /// <summary>
+        /// バトルシーンに遷移
+        /// </summary>
+        /// <returns></returns>
+        public eScene ToBattle()
+        {
+            return eScene.BATTLE;
+        }
 
         /// <summary>
         /// エンドフラッグをとる

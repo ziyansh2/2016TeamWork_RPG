@@ -1,8 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ロードシーン
-///最後修正内容：。。
-///最後修正日：。。
+///最後修正内容：maptipテスト用画像追加
+///最後修正者：柏
+///最後修正日：2016.12.20
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,10 @@ namespace _2016RPGTeamWork.Scene
         private Loader bgmLoader;
         private Loader textureLoader;
 
+        /// <summary>
+        /// 画像ソースリストを出す
+        /// </summary>
+        /// <returns></returns>
         private string[,] GetTextureList() {
             string path = "./Texture/";
             string[,] list = new string[,] {
@@ -28,10 +33,15 @@ namespace _2016RPGTeamWork.Scene
                 { "gameplay", path },
                 { "battle", path },
                 { "puddle", path },
+                { "mapsource", path },  //2016.12.20 by柏 maptip描画テスト追加
             };
             return list;
         }
 
+        /// <summary>
+        /// ＳＥソースリストを出す
+        /// </summary>
+        /// <returns></returns>
         private string[,] GetSE_List() {
             string path = "./SE/";
             string[,] list = new string[,] {
@@ -40,7 +50,10 @@ namespace _2016RPGTeamWork.Scene
             return list;
         }
 
-
+        /// <summary>
+        /// ＢＧＭソースリストを出す
+        /// </summary>
+        /// <returns></returns>
         private string[,] GetBGM_List() {
             string path = "./BGM/";
             string[,] list = new string[,] {
@@ -49,6 +62,10 @@ namespace _2016RPGTeamWork.Scene
             return list;
         }
 
+        /// <summary>
+        /// 実際のロード処理
+        /// </summary>
+        /// <param name="gameDevice">デバイス管理クラス</param>
         public Load(GameDevice gameDevice)
         {
             endFlag = false;

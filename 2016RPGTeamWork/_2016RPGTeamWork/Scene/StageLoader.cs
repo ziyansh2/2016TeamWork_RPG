@@ -1,12 +1,13 @@
 ﻿///作成日：2016.12.20
 ///作成者：柏
 ///作成内容：ステージのロード専用クラス
-///最後修正内容：。。
-///最後修正者：。。
-///最後修正日：。。
+///最後修正内容：ステージテキストのロード機能
+///最後修正者：柏
+///最後修正日：2016.12.20
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,34 @@ namespace _2016RPGTeamWork.Scene
         public StageLoader() { }
 
         /// <summary>
+        /// ステージテキストをロード
+        /// </summary>
+        /// <param name="stage">ステージの種類</param>
+        /// <returns></returns>
+        public Dictionary<int,string> TextLoad(eStage stage)
+        {
+            Dictionary<int, string> TextData = new Dictionary<int, string>();
+            string[] splitLine = null;
+
+            try {
+                splitLine = File.ReadAllLines("Content/CSV/Stage_" + stage + "_Text.csv", Encoding.GetEncoding("Shift_JIS"));
+            }
+            catch (FileNotFoundException ffe) {
+                return new Dictionary<int, string>();
+            }
+
+            for (int i = 0; i < splitLine.Length; i++) {
+                string[] data = splitLine[i].Split('`');
+                Debug.Assert(data.Length == 2,
+                    "Stage_" + stage + "_Text.csvファイルをチェックしてください。" +
+                    i +　"番のデータが読み込めません。"
+                    );
+                TextData.Add(GetInt(data[0]), data[1]);
+            }
+            return TextData;
+        }
+
+        /// <summary>
         /// ステージマップデータをロード
         /// </summary>
         /// <param name="stage">ステージの種類</param>
@@ -25,19 +54,17 @@ namespace _2016RPGTeamWork.Scene
         public int[,] MapLoad(eStage stage) {
             int[,] mapData;
             List<string> lines = null;
-            StreamReader streamReader = null;
+
+            string[] splitLine;
             try {
-                streamReader = new StreamReader("Content/CSV/Stage_" + stage + ".csv", Encoding.GetEncoding("Shift_JIS"));
-                lines = new List<string>();
-                while (streamReader.Peek() >= 0) {
-                    lines.Add(streamReader.ReadLine());
-                }
+                splitLine = File.ReadAllLines("Content/CSV/Stage_" + stage + ".csv", Encoding.GetEncoding("Shift_JIS"));
             }
-            catch (FileNotFoundException ffe){
+            catch (FileNotFoundException ffe) {
                 return new int[0, 0];
             }
+            lines = splitLine.ToList();
 
-            string[] splitLine = lines[0].Split(',');
+            splitLine = lines[0].Split(',');
             mapData = new int[GetInt(splitLine[1]), GetInt(splitLine[0])];
             lines.RemoveAt(0);
 
@@ -47,7 +74,6 @@ namespace _2016RPGTeamWork.Scene
                     mapData[y, x] = GetInt(splitLine[x]);
                 }
             }
-            streamReader.Close();
             return mapData;
         }
 

@@ -77,6 +77,7 @@
     <Compile Include="Device\GameDevice.cs" />
     <Compile Include="Device\InputState.cs" />
     <Compile Include="Device\Loader.cs" />
+    <Compile Include="Device\Loaders\FontLoader.cs" />
     <Compile Include="Device\Motion.cs" />
     <Compile Include="Device\Renderer.cs" />
     <Compile Include="Device\Loaders\SELoader.cs" />

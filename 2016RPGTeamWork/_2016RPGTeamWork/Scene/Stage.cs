@@ -26,6 +26,7 @@ namespace _2016RPGTeamWork.Scene
     {
         private eStage currentStage;
         private int[,] mapData;
+        private Dictionary<int, string> textData;    //2016.12.20 by柏 読み取った文字データ保存用
         private StageLoader stageLoader;
 
         public Stage() {
@@ -46,6 +47,9 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         public void Initialize() {
             mapData = stageLoader.MapLoad(currentStage);
+
+            //2016.12.20 by柏 文字データを読み取る
+            textData = stageLoader.TextLoad(currentStage);
         }
 
         /// <summary>
@@ -64,5 +68,11 @@ namespace _2016RPGTeamWork.Scene
             }
         }
 
+        /// <summary>
+        /// 読み取った文字データを出す
+        /// </summary>
+        public Dictionary<int,string> GetTextData {
+            get { return textData; }
+        }
     }
 }

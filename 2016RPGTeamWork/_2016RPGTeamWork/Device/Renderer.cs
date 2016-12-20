@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：岡本
 ///作成内容：描画管理クラス
-///最後修正内容：注釈追加、バグ修正
+///最後修正内容：文字データを描画するためフォント管理追加
 ///最後修正者：柏
-///最後修正日：2016.12.19
+///最後修正日：2016.12.20
 
 using System;
 using System.Collections.Generic;
@@ -24,6 +24,9 @@ namespace _2016RPGTeamWork.Device
         //複数画像管理
         private Dictionary<string, Texture2D> textures;   //初期化位置調整　by柏　2016.12.19
 
+        //複数のフォント管理追加
+        private Dictionary<string, SpriteFont> fonts;   //2016.12.20 by柏　フォントの管理用
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -32,6 +35,7 @@ namespace _2016RPGTeamWork.Device
         public Renderer(ContentManager content, GraphicsDevice graphics)
         {
             textures = new Dictionary<string, Texture2D>();     //初期化位置調整　by柏　2016.12.19
+            fonts = new Dictionary<string, SpriteFont>();   //2016.12.20 by柏　フォントの管理用
             contentManager = content;
             spriteBatch = new SpriteBatch(graphics);
         }
@@ -75,6 +79,42 @@ namespace _2016RPGTeamWork.Device
             }
             textures.Add(name, texture);
         }
+
+        /// <summary>
+        /// フォントの読込　by柏　2016.12.20
+        /// </summary>
+        /// <param name="fontName">フォントの名前</param>
+        /// <param name="filepath">フォントのアドレス</param>
+        public void LoadFont(string fontName, string filepath = "./")
+        {
+            //Debug.Assert(fonts.ContainsKey(fontName),
+            //    "アセット名が間違えていませんか？\n" +
+            //    "大文字小文字間違っていませんか？\n" +
+            //    "LoadFontメソッドで読み込んでいますか？\n" +
+            //    "プログラムを確認してください\n");
+
+            fonts.Add(fontName, contentManager.Load<SpriteFont>(filepath + fontName));
+        }
+
+        /// <summary>
+        /// フォントの読込　by柏　2016.12.20
+        /// </summary>
+        /// <param name="fontName">フォントの名前</param>
+        /// <param name="font">フォント</param>
+        public void LoadFont(string fontName, SpriteFont font) {
+            Debug.Assert(fonts.ContainsKey(fontName),
+                "アセット名が間違えていませんか？\n" +
+                "大文字小文字間違っていませんか？\n" +
+                "LoadFontメソッドで読み込んでいますか？\n" +
+                "プログラムを確認してください\n");
+
+            fonts.Add(fontName, font);
+        }
+
+
+
+
+
 
         /// <summary>
         /// 解放
@@ -272,5 +312,45 @@ namespace _2016RPGTeamWork.Device
                 position.X = position.X + 32;//横幅32ビット
             }
         }
+
+        /// <summary>
+        /// 文字表示用 by柏　2016.12.20
+        /// </summary>
+        /// <param name="data">表示したい文字</param>
+        /// <param name="position">表示位置</param>
+        public void DrawString(string data, Vector2 position, float scale = 1.0f)
+        {
+            string fontName = "ＭＳ Ｐゴシック";
+
+            Debug.Assert(fonts.ContainsKey(fontName),
+                "アセット名が間違えていませんか？\n" +
+                "大文字小文字間違っていませんか？\n" +
+                "LoadFontメソッドで読み込んでいますか？\n" +
+                "プログラムを確認してください\n");
+
+            spriteBatch.DrawString(fonts[fontName], data, position, Color.Yellow, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+        }
+
+        /// <summary>
+        /// 文字表示用 by柏　2016.12.20
+        /// </summary>
+        /// <param name="fontName">フォント</param>
+        /// <param name="data">表示したい文字</param>
+        /// <param name="position">表示位置</param>
+        /// <param name="color">色</param>
+        /// <param name="scale">大きさ</param>
+        public void DrawString(string fontName, string data, Vector2 position, Color color, float scale = 1.0f)
+        {
+            Debug.Assert(fonts.ContainsKey(fontName),
+                "アセット名が間違えていませんか？\n" +
+                "大文字小文字間違っていませんか？\n" +
+                "LoadFontメソッドで読み込んでいますか？\n" +
+                "プログラムを確認してください\n");
+
+            spriteBatch.DrawString(fonts[fontName], data, position, color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+        }
+
+        
+
     }
 }

@@ -82,6 +82,20 @@
       <Name>Stage_WORLDMAP</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="Font\ＭＳ Ｐゴシック.spritefont">
+      <Name>ＭＳ Ｐゴシック</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="Font\HGS行書体.spritefont">
+      <Name>HGS行書体</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <None Include="CSV\Stage_WORLDMAP_Text.csv">
+      <Name>Stage_WORLDMAP_Text</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Texture\mapsource.png">

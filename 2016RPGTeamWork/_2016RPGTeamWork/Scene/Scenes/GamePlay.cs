@@ -1,7 +1,7 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ゲームプレーシーン
-///最後修正内容：Stageクラスを宣言して描画
+///最後修正内容：Stageクラスを宣言して描画、文字表示追加
 ///最後修正者：柏
 ///最後修正日：2016.12.20
 
@@ -23,6 +23,8 @@ namespace _2016RPGTeamWork.Scene
         private InputState input;
         private Motion motion;      //アニメーション用
         private Stage stage;    //2016.12.20 by柏　stage描画用
+        private Dictionary<int,string> textData;    //2016.12.20 by柏　文字表示用
+        private int textNum;    //2016.12.20 by柏　文字表示用
         public GamePlay(GameDevice gameDevice)
         {
             endFlag = false;
@@ -40,6 +42,8 @@ namespace _2016RPGTeamWork.Scene
             endFlag = false;
             battleFlag = false;
             stage.Initialize();    //2016.12.20 by柏　stage描画用
+            textData = stage.GetTextData;
+            textNum = -1;
 
             //アニメーション用クラスを生成してから初期化
             motion = new Motion();
@@ -56,8 +60,17 @@ namespace _2016RPGTeamWork.Scene
         {
             if (input.IsKeyDown(Keys.Space)) { endFlag = true; }
             else if (input.IsKeyDown(Keys.Z)) { battleFlag = !battleFlag; }
+            else if (input.IsKeyDown(Keys.X)) { TextUpdate(); }
 
             motion.Update();    //アニメーション更新
+        }
+
+        private void TextUpdate() {
+            textNum++;
+            if (!textData.ContainsKey(textNum))
+            {
+                textNum = -1;
+            }
         }
 
         /// <summary>
@@ -68,6 +81,8 @@ namespace _2016RPGTeamWork.Scene
             stage.Draw(renderer);    //2016.12.20 by柏　stage描画用
             renderer.DrawTexture("gameplay", Vector2.Zero);
             renderer.DrawTexture("puddle", Vector2.One * 550, motion.DrawRange());
+            if (textNum < 0) { return; }
+            renderer.DrawString(textData[textNum], new Vector2(50, 400),2.0f);
         }
 
 

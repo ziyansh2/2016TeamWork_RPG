@@ -1,7 +1,7 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ロードシーン
-///最後修正内容：maptipテスト用画像追加
+///最後修正内容：maptipテスト用画像追加、フォント読込追加
 ///最後修正者：柏
 ///最後修正日：2016.12.20
 
@@ -21,6 +21,7 @@ namespace _2016RPGTeamWork.Scene
         private Loader seLoader;
         private Loader bgmLoader;
         private Loader textureLoader;
+        private Loader fontLoader;  //by柏　2016.12.20　フォントロード用
 
         /// <summary>
         /// 画像ソースリストを出す
@@ -61,6 +62,18 @@ namespace _2016RPGTeamWork.Scene
             };
             return list;
         }
+        /// <summary>
+        /// フォントリストを出す  by柏　2016.12.20
+        /// </summary>
+        /// <returns></returns>
+        private string[,] GetFont_List() {
+            string path = "./Font/";
+            string[,] list = new string[,] {
+                { "ＭＳ Ｐゴシック", path },
+                { "HGS行書体",path },
+            };
+            return list;
+        }
 
         /// <summary>
         /// 実際のロード処理
@@ -73,6 +86,9 @@ namespace _2016RPGTeamWork.Scene
             seLoader = new SELoader(gameDevice.GetSound(), GetSE_List());
             bgmLoader = new BGMLoader(gameDevice.GetSound(), GetBGM_List());
             textureLoader = new TextureLoader(gameDevice.GetRenderer(), GetTextureList());
+
+            //by柏　2016.12.20　フォントロード用
+            fontLoader = new FontLoader(gameDevice.GetRenderer(), GetFont_List());
         }
 
         /// <summary>
@@ -84,6 +100,7 @@ namespace _2016RPGTeamWork.Scene
             seLoader.Initialize();
             bgmLoader.Initialize();
             textureLoader.Initialize();
+            fontLoader.Initialize();    //by柏　2016.12.20　フォントロード用
         }
 
         /// <summary>
@@ -91,22 +108,13 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         public void Update()
         {
-            if (!textureLoader.IsEnd())
-            {
-                textureLoader.Update();
-            }
-            else if (!seLoader.IsEnd())
-            {
-                seLoader.Update();
-            }
-            else if (!bgmLoader.IsEnd())
-            {
-                bgmLoader.Update();
-            }
-            else {
-                endFlag = true;
-            }
-            
+            if (!textureLoader.IsEnd()) { textureLoader.Update(); }
+            else if (!seLoader.IsEnd()) { seLoader.Update(); }
+            else if (!bgmLoader.IsEnd()){ bgmLoader.Update(); }
+
+            //by柏　2016.12.20　フォントロード用
+            else if (!fontLoader.IsEnd()) { fontLoader.Update(); }
+            else { endFlag = true; }
         }
 
         /// <summary>

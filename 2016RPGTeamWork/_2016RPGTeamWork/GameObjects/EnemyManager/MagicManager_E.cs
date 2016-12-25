@@ -1,25 +1,30 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵のマジック管理クラス
-///最後修正内容：。。
-///最後修正日：。。
+///最後修正内容：ファイル読込に合わせて修正
+///最後修正者：柏
+///最後修正日：2016.12.25
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 using _2016RPGTeamWork.GameObjects.EnemyInterface;
-using _2016RPGTeamWork.GameObjects.EnemyManager.Magic_E_List;
+using _2016RPGTeamWork.Scene;
 
 namespace _2016RPGTeamWork.GameObjects.EnemyManager
 {
     class MagicManager_E
     {
-        public List<Magic_E> magicList;     //(enum)eMagic_Eの順番通りmagicを保存するList
+        private List<int[]> magicList;     //(enum)eMagic_Eの順番通りmagicを保存するList
+        private StageLoader stageLoader;
+        private int[,] magicData;
 
         public MagicManager_E()
         {
-            magicList = new List<Magic_E>();    //Listの初期化
+            magicList = new List<int[]>();    //Listの初期化
+            stageLoader = new StageLoader();
         }
 
         /// <summary>
@@ -27,7 +32,17 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManager
         /// </summary>
         public void Initialize()
         {
-            magicList.Add(new Magic1());
+            magicData = stageLoader.DataLoad("Magic_E");
+            for (int i = 0; i < magicData.GetLength(0); i++)
+            {
+                magicList.Add(new int[] {
+                    magicData[i, (int)eMTParameter.Offence],
+                    magicData[i, (int)eMTParameter.Defence],
+                    magicData[i, (int)eMTParameter.MagicOffence],
+                    magicData[i, (int)eMTParameter.MagicDefence],
+                    magicData[i, (int)eMTParameter.Speed]
+                });
+            }
         }
 
         /// <summary>
@@ -35,7 +50,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManager
         /// </summary>
         /// <param name="magic">enumのmagic</param>
         /// <returns></returns>
-        public Magic_E GetMagic(eMagic_E magic)
+        public int[] GetMagic(eMagic_E magic)
         {
             return magicList[(int)magic];
         }

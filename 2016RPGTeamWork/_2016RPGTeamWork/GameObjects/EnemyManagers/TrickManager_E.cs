@@ -11,9 +11,8 @@ using System.Linq;
 using System.Text;
 
 using _2016RPGTeamWork.Scene;
-using _2016RPGTeamWork.GameObjects.EnemyInterface;
 
-namespace _2016RPGTeamWork.GameObjects.EnemyManager
+namespace _2016RPGTeamWork.GameObjects.EnemyManagers
 {
     class TrickManager_E
     {

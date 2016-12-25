@@ -1,46 +1,50 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵クラス
-///最後修正内容：。。
-///最後修正者：。。
-///最後修正日：。。
+///最後修正内容：敵のファイル管理に合わせて修正
+///最後修正者：柏
+///最後修正日：2016.12.26
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using _2016RPGTeamWork.GameObjects.EnemyInterface;
 using _2016RPGTeamWork.Def;
+using _2016RPGTeamWork.GameObjects.EnemyManagers;
 
 namespace _2016RPGTeamWork.GameObjects
 {
+    
+
     class Enemy : Character
     {
-        private IsEnemy isEnemy;
+        private EnemyRadio enemyRadio;
         private Dictionary<eAction, int> actionRadio;
         private static Random rnd = new Random();
 
-        public Enemy(CharacterInfo ci, IsEnemy isEnemy)
+        public Enemy(CharacterInfo ci, EnemyRadio enemyRadio)
             : base(ci)
         {
-            this.isEnemy = isEnemy;
-            actionRadio = isEnemy.GetActionRadio();
+            this.enemyRadio = enemyRadio;
+            actionRadio = enemyRadio.GetActionRadio();
         }
+
+
 
         public void Initialize()
         {
-            isEnemy.Initialize();
+            
         }
 
         public void Update()
         {
-            isEnemy.Update();
+            
         }
 
         public void Draw()
         {
-            isEnemy.Draw();
+            
         }
 
         public void Action(Character other)
@@ -48,11 +52,11 @@ namespace _2016RPGTeamWork.GameObjects
             int act = rnd.Next(Parameter.MaxActionPercent);
             switch (CheckAction(act))
             {
-                case eAction.Attack: isEnemy.Attack(this, other); break;
-                case eAction.Defence: isEnemy.Defence(this, other); break;
-                case eAction.Escape: isEnemy.Escape(this, other); break;
-                case eAction.Magic: isEnemy.Magic(this, other); break;
-                case eAction.Trick: isEnemy.Trick(this, other); break;
+                case eAction.Attack: Attack(this, other); break;
+                case eAction.Defence: Defence(this, other); break;
+                case eAction.Escape: Escape(this, other); break;
+                case eAction.Magic: Magic(this, other); break;
+                case eAction.Trick: Trick(this, other); break;
             }
         }
 
@@ -70,5 +74,14 @@ namespace _2016RPGTeamWork.GameObjects
             if (act > attack) { return eAction.Defence; }
             return eAction.Attack;
         }
+
+
+        private void Attack(Character this_E, Character other) { }
+        private void Magic(Character this_E, Character other) { }
+        private void Trick(Character this_E, Character other) { }
+        private void Escape(Character this_E, Character other) { }
+        private void Defence(Character this_E, Character other) { }
+
+
     }
 }

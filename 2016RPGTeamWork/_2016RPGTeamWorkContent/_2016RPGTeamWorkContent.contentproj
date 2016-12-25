@@ -78,6 +78,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="CSV\Enemy.csv">
+      <Name>Enemy</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSV\Magic_E.csv">
+      <Name>Magic_E</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="CSV\Stage_WORLDMAP.csv">
       <Name>Stage_WORLDMAP</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -94,6 +102,10 @@
     </Compile>
     <None Include="CSV\Stage_WORLDMAP_Text.csv">
       <Name>Stage_WORLDMAP_Text</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSV\Trick_E.csv">
+      <Name>Trick_E</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

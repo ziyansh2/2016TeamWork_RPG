@@ -86,10 +86,10 @@
     <Compile Include="GameObjects\Character.cs" />
     <Compile Include="GameObjects\CharacterInfo.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
-    <Compile Include="GameObjects\EnemyInterface\IsEnemy.cs" />
-    <Compile Include="GameObjects\EnemyInterface\IsSlime_E.cs" />
-    <Compile Include="GameObjects\EnemyManager\MagicManager_E.cs" />
-    <Compile Include="GameObjects\EnemyManager\TrickManager_E.cs" />
+    <Compile Include="GameObjects\EnemyManagers\EnemyManager.cs" />
+    <Compile Include="GameObjects\EnemyManagers\MagicManager_E.cs" />
+    <Compile Include="GameObjects\EnemyManagers\TrickManager_E.cs" />
+    <Compile Include="GameObjects\EnemyRadio.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="NPC\IMove\MoveHorizonal_3.cs" />
     <Compile Include="NPC\IMove\MoveVertical_3.cs" />

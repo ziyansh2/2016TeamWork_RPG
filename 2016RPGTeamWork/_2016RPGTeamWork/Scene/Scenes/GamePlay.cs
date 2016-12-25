@@ -25,6 +25,7 @@ namespace _2016RPGTeamWork.Scene
         private Stage stage;    //2016.12.20 by柏　stage描画用
         private Dictionary<int,string> textData;    //2016.12.20 by柏　文字表示用
         private int textNum;    //2016.12.20 by柏　文字表示用
+        private Writer writer;
         public GamePlay(GameDevice gameDevice)
         {
             endFlag = false;
@@ -44,6 +45,8 @@ namespace _2016RPGTeamWork.Scene
             stage.Initialize();    //2016.12.20 by柏　stage描画用
             textData = stage.GetTextData;
             textNum = -1;
+            writer = new Writer();
+            writer.Initialize();
 
             //アニメーション用クラスを生成してから初期化
             motion = new Motion();
@@ -67,9 +70,12 @@ namespace _2016RPGTeamWork.Scene
 
         private void TextUpdate() {
             textNum++;
-            if (!textData.ContainsKey(textNum))
-            {
+            if (!textData.ContainsKey(textNum)) {
                 textNum = -1;
+            }
+            else {
+                writer.Initialize();
+                writer.SetData(textData[textNum]);
             }
         }
 
@@ -82,7 +88,8 @@ namespace _2016RPGTeamWork.Scene
             renderer.DrawTexture("gameplay", Vector2.Zero);
             renderer.DrawTexture("puddle", Vector2.One * 550, motion.DrawRange());
             if (textNum < 0) { return; }
-            renderer.DrawString(textData[textNum], new Vector2(50, 400),2.0f);
+            writer.Draw(renderer);
+            //renderer.DrawString(textData[textNum], new Vector2(50, 400),2.0f);
         }
 
 

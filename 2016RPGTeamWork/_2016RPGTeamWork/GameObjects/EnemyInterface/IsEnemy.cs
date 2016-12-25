@@ -13,16 +13,30 @@ namespace _2016RPGTeamWork.GameObjects.EnemyInterface
 {
     enum eMagic_E
     {
-        magic1 = 1,
-        magic2,
-        magic3,
+        Magic0,
+        Magic1,
+        Magic2,
+        Magic3,
+        Magic4,
+        Magic5,
+        Magic6,
+        Magic7,
+        Magic8,
+        Magic9,
     }
 
     enum eTrick_E
     {
-        trick1 = 1,
-        trick2,
-        trick3,
+        Trick0,
+        Trick1,
+        Trick2,
+        Trick3,
+        Trick4,
+        Trick5,
+        Trick6,
+        Trick7,
+        Trick8,
+        Trick9,
     }
 
     enum eAction
@@ -33,6 +47,14 @@ namespace _2016RPGTeamWork.GameObjects.EnemyInterface
         Magic,
         Trick,
     }
+
+    enum eMTParameter {
+        Offence,
+        Defence,
+        MagicOffence,
+        MagicDefence,
+        Speed,
+}
 
     interface IsEnemy
     {

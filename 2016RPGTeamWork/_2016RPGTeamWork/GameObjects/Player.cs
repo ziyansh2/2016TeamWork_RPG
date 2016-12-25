@@ -1,8 +1,10 @@
 ﻿///作成日：2016.12.19
 ///作成者：ホームズ
 ///作成内容：プレイヤークラス
-///最後修正内容：
-///最後修正日：
+///最後修正内容：。。
+///最後修正者：。。
+///最後修正日：。。
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

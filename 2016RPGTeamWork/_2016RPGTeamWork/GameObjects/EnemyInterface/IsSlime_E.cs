@@ -10,8 +10,6 @@ using System.Linq;
 using System.Text;
 
 using _2016RPGTeamWork.GameObjects.EnemyManager;
-using _2016RPGTeamWork.GameObjects.EnemyManager.Magic_E_List;
-using _2016RPGTeamWork.GameObjects.EnemyManager.Trick_E_List;
 
 namespace _2016RPGTeamWork.GameObjects.EnemyInterface
 {
@@ -22,20 +20,22 @@ namespace _2016RPGTeamWork.GameObjects.EnemyInterface
 
         private Dictionary<eAction, int> actionRadio;   //行動の比率管理用
 
-        private Dictionary<eMagic_E, Magic_E> magicList;   //使えるマジックの管理用
-        private Dictionary<eTrick_E, Trick_E> trickList;   //使える技の管理用
+        private Dictionary<eMagic_E, int[]> magicList;   //使えるマジックの管理用
+        private Dictionary<eTrick_E, int[]> trickList;   //使える技の管理用
 
         public IsSlime_E()
         {
+            m_Manager = new MagicManager_E();
+            t_Manager = new TrickManager_E();
             actionRadio = new Dictionary<eAction, int>();
-            magicList = new Dictionary<eMagic_E, Magic_E>();
-            trickList = new Dictionary<eTrick_E, Trick_E>();
+            magicList = new Dictionary<eMagic_E, int[]>();
+            trickList = new Dictionary<eTrick_E, int[]>();
         }
 
         public void Initialize()
         {
-            magicList.Add(eMagic_E.magic1, new Magic1());
-            trickList.Add(eTrick_E.trick1, new Trick1());
+            magicList.Add(eMagic_E.Magic1, m_Manager.GetMagic(eMagic_E.Magic1));
+            trickList.Add(eTrick_E.Trick1, t_Manager.GetMagic(eTrick_E.Trick1));
 
             //全部のActの比の合計は100
             actionRadio[eAction.Attack] = 20;
@@ -68,12 +68,11 @@ namespace _2016RPGTeamWork.GameObjects.EnemyInterface
 
         public void Magic(Character thisE, Character other)
         {
-
-            int _offence = magicList[eMagic_E.magic1].Offence;
-            int _defence = magicList[eMagic_E.magic1].Defence;
-            int _magicOffence = magicList[eMagic_E.magic1].MagicOffence;
-            int _magicDefence = magicList[eMagic_E.magic1].MagicDefence;
-            int _speed = magicList[eMagic_E.magic1].Speed;
+            int _offence = magicList[eMagic_E.Magic1][(int)eMTParameter.Offence];
+            int _defence = magicList[eMagic_E.Magic1][(int)eMTParameter.Defence];
+            int _magicOffence = magicList[eMagic_E.Magic1][(int)eMTParameter.MagicOffence];
+            int _magicDefence = magicList[eMagic_E.Magic1][(int)eMTParameter.MagicDefence];
+            int _speed = magicList[eMagic_E.Magic1][(int)eMTParameter.Speed];
         }
 
         public void Trick(Character this_E, Character other)

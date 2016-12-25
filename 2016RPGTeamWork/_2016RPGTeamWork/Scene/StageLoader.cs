@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.20
 ///作成者：柏
 ///作成内容：ステージのロード専用クラス
-///最後修正内容：ステージテキストのロード機能
+///最後修正内容：（エネミー、技、マジックなど）をロードするメソッド追加
 ///最後修正者：柏
-///最後修正日：2016.12.20
+///最後修正日：2016.12.25
 
 using System;
 using System.Collections.Generic;
@@ -75,6 +75,42 @@ namespace _2016RPGTeamWork.Scene
                 }
             }
             return mapData;
+        }
+
+        /// <summary>
+        /// データ（エネミー、技、マジックなど）をロード
+        /// </summary>
+        /// <param name="fileName">ファイル名</param>
+        /// <returns></returns>
+        public int[,] DataLoad(string fileName)
+        {
+            int[,] data;
+            List<string> lines = null;
+
+            string[] splitLine;
+            try
+            {
+                splitLine = File.ReadAllLines("Content/CSV/" + fileName + ".csv", Encoding.GetEncoding("Shift_JIS"));
+            }
+            catch (FileNotFoundException ffe)
+            {
+                return new int[0, 0];
+            }
+            lines = splitLine.ToList();
+
+            splitLine = lines[0].Split(',');
+            data = new int[GetInt(splitLine[1]), GetInt(splitLine[0])];
+            lines.RemoveAt(0);
+
+            for (int y = 0; y < data.GetLength(0); y++)
+            {
+                splitLine = lines[y].Split(',');
+                for (int x = 0; x < data.GetLength(1); x++)
+                {
+                    data[y, x] = GetInt(splitLine[x]);
+                }
+            }
+            return data;
         }
 
         /// <summary>

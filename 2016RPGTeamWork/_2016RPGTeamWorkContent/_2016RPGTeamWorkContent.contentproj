@@ -76,8 +76,23 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Compile Include="Texture\enemy.png">
+      <Name>enemy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Texture\player1.png">
+      <Name>player1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CSV\dialogueCor_Text.csv">
+      <Name>dialogueCor_Text</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="CSV\Enemy.csv">
       <Name>Enemy</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -100,6 +115,10 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <None Include="CSV\Stage_WORLDMAP_DiaMap.csv">
+      <Name>Stage_WORLDMAP_DiaMap</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="CSV\Stage_WORLDMAP_Text.csv">
       <Name>Stage_WORLDMAP_Text</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

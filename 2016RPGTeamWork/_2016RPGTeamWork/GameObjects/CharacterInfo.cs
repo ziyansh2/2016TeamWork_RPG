@@ -61,7 +61,7 @@ namespace _2016RPGTeamWork.GameObjects
         /// <param name="magicDefence">防御（魔法用）</param>
         /// <param name="speed">素早さ</param>
         /// <param name="level">レベル</param>
-        public CharacterInfo(string name, int maxHP, int maxMP, int offence, int defence, int magicOffence, int magicDefence, int speed, int level)
+        public CharacterInfo(string name, int level, int maxHP, int maxMP, int offence, int defence, int magicOffence, int magicDefence, int speed)
         {
             this.name = name;
             this.maxHP = maxHP;

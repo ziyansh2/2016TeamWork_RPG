@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.20
 ///作成者：柏
 ///作成内容：ステージのロード専用クラス
-///最後修正内容：（エネミー、技、マジックなど）をロードするメソッド追加
+///最後修正内容：static classに変更、セリフデータ読込の追加
 ///最後修正者：柏
-///最後修正日：2016.12.25
+///最後修正日：2017.1.8
 
 using System;
 using System.Collections.Generic;
@@ -14,16 +14,14 @@ using System.Text;
 
 namespace _2016RPGTeamWork.Scene
 {
-    class StageLoader
+    static class StageLoader
     {
-        public StageLoader() { }
-
         /// <summary>
-        /// ステージテキストをロード
+        /// ステージテキストをロード    2016.12.20
         /// </summary>
         /// <param name="stage">ステージの種類</param>
         /// <returns></returns>
-        public Dictionary<int,string> TextLoad(eStage stage)
+        public static Dictionary<int,string> TextLoad(eStage stage)
         {
             Dictionary<int, string> TextData = new Dictionary<int, string>();
             string[] splitLine = null;
@@ -47,11 +45,11 @@ namespace _2016RPGTeamWork.Scene
         }
 
         /// <summary>
-        /// ステージマップデータをロード
+        /// ステージマップデータをロード  2016.12.20
         /// </summary>
         /// <param name="stage">ステージの種類</param>
         /// <returns></returns>
-        public int[,] MapLoad(eStage stage) {
+        public static int[,] MapLoad(eStage stage) {
             int[,] mapData;
             List<string> lines = null;
 
@@ -60,6 +58,7 @@ namespace _2016RPGTeamWork.Scene
                 splitLine = File.ReadAllLines("Content/CSV/Stage_" + stage + ".csv", Encoding.GetEncoding("Shift_JIS"));
             }
             catch (FileNotFoundException ffe) {
+                
                 return new int[0, 0];
             }
             lines = splitLine.ToList();
@@ -78,11 +77,48 @@ namespace _2016RPGTeamWork.Scene
         }
 
         /// <summary>
-        /// データ（エネミー、技、マジックなど）をロード
+        /// ステージのセリフデータをロード 2017.1.8
+        /// </summary>
+        /// <param name="stage">ステージの種類</param>
+        /// <returns></returns>
+        public static int[,] DialogueMapLoad(eStage stage)
+        {
+            int[,] mapData;
+            List<string> lines = null;
+
+            string[] splitLine;
+            try
+            {
+                splitLine = File.ReadAllLines("Content/CSV/Stage_" + stage + "_DiaMap.csv", Encoding.GetEncoding("Shift_JIS"));
+            }
+            catch (FileNotFoundException ffe)
+            {
+                return new int[0, 0];
+            }
+            lines = splitLine.ToList();
+
+            splitLine = lines[0].Split(',');
+            mapData = new int[GetInt(splitLine[1]), GetInt(splitLine[0])];
+            lines.RemoveAt(0);
+
+            for (int y = 0; y < mapData.GetLength(0); y++)
+            {
+                splitLine = lines[y].Split(',');
+                for (int x = 0; x < mapData.GetLength(1); x++)
+                {
+                    mapData[y, x] = GetInt(splitLine[x]);
+                }
+            }
+            return mapData;
+        }
+
+
+        /// <summary>
+        /// データ（エネミー、技、マジックなど）をロード  2016.12.20
         /// </summary>
         /// <param name="fileName">ファイル名</param>
         /// <returns></returns>
-        public int[,] DataLoad(string fileName)
+        public static int[,] DataLoad(string fileName)
         {
             int[,] data;
             List<string> lines = null;
@@ -114,11 +150,11 @@ namespace _2016RPGTeamWork.Scene
         }
 
         /// <summary>
-        /// CSVファイルから読み取ったstringデータをintに変換
+        /// CSVファイルから読み取ったstringデータをintに変換  2016.12.20
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private int GetInt(string data) {
+        private static int GetInt(string data) {
             int data_int;
             int.TryParse(data, out data_int);
             return data_int > 0 ? data_int : 0;

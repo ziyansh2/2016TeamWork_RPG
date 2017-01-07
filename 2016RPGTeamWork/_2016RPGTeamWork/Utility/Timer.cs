@@ -1,15 +1,12 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：タイマクラス
-///最後修正内容：。。
-///最後修正者：。。
-///最後修正日：。。
+///最後修正内容：今の時間を設定できるようになった
+///最後修正者：柏
+///最後修正日：2017.1.8
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace _2016RPGTeamWork.Utility
 {
@@ -56,6 +53,10 @@ namespace _2016RPGTeamWork.Utility
         /// </summary>
         public bool IsTime {
             get { return isTime; }
+        }
+
+        public void SetCurrentTime(float time){
+            currentTime = (int)(time * 60);
         }
 
     }

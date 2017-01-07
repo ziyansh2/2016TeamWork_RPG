@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵の技管理クラス
-///最後修正内容：ファイル読込に合わせて修正
+///最後修正内容：StageLoader改善によって調整
 ///最後修正者：柏
-///最後修正日：2016.12.25
+///最後修正日：2016.1.8
 
 using System;
 using System.Collections.Generic;
@@ -17,13 +17,11 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
     class TrickManager_E
     {
         private List<int[]> trickList;
-        private StageLoader stageLoader;
         private int[,] trickData;
 
         public TrickManager_E()
         {
             trickList = new List<int[]>();
-            stageLoader = new StageLoader();
         }
 
         /// <summary>
@@ -31,7 +29,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         /// </summary>
         public void Initialize()
         {
-            trickData = stageLoader.DataLoad("Trick_E");
+            trickData = StageLoader.DataLoad("Trick_E");
             for (int i = 0; i < trickData.GetLength(0); i++) {
                 trickList.Add(new int[] {
                     trickData[i, (int)eMTParameter.Offence], 

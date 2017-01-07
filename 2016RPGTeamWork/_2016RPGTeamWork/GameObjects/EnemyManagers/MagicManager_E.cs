@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵のマジック管理クラス
-///最後修正内容：ファイル読込に合わせて修正
+///最後修正内容：StageLoader改善によって調整
 ///最後修正者：柏
-///最後修正日：2016.12.25
+///最後修正日：2016.1.8
 
 using System;
 using System.Collections.Generic;
@@ -17,13 +17,11 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
     class MagicManager_E
     {
         private List<int[]> magicList;     //(enum)eMagic_Eの順番通りmagicを保存するList
-        private StageLoader stageLoader;
         private int[,] magicData;
 
         public MagicManager_E()
         {
             magicList = new List<int[]>();    //Listの初期化
-            stageLoader = new StageLoader();
         }
 
         /// <summary>
@@ -31,7 +29,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         /// </summary>
         public void Initialize()
         {
-            magicData = stageLoader.DataLoad("Magic_E");
+            magicData = StageLoader.DataLoad("Magic_E");
             for (int i = 0; i < magicData.GetLength(0); i++)
             {
                 magicList.Add(new int[] {

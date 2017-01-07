@@ -91,10 +91,12 @@
     <Compile Include="GameObjects\EnemyManagers\TrickManager_E.cs" />
     <Compile Include="GameObjects\EnemyRadio.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="NPC\DialogueManager.cs" />
     <Compile Include="NPC\IMove\MoveHorizonal_3.cs" />
+    <Compile Include="NPC\IMove\MoveNone.cs" />
     <Compile Include="NPC\IMove\MoveVertical_3.cs" />
     <Compile Include="NPC\MoveAble.cs" />
-    <Compile Include="NPC\NPC.cs" />
+    <Compile Include="NPC\NoPlayChara.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

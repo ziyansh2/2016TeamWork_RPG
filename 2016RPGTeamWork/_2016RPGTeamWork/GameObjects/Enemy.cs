@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵クラス
-///最後修正内容：敵のファイル管理に合わせて修正
+///最後修正内容：描画できた
 ///最後修正者：柏
-///最後修正日：2016.12.26
+///最後修正日：2017.1.8
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,8 @@ using System.Text;
 
 using _2016RPGTeamWork.Def;
 using _2016RPGTeamWork.GameObjects.EnemyManagers;
+using _2016RPGTeamWork.Device;
+using Microsoft.Xna.Framework;
 
 namespace _2016RPGTeamWork.GameObjects
 {
@@ -22,19 +24,26 @@ namespace _2016RPGTeamWork.GameObjects
         private EnemyRadio enemyRadio;
         private Dictionary<eAction, int> actionRadio;
         private static Random rnd = new Random();
+        private eEnemy enemyType;
+        private Vector2 position;
+        private List<Rectangle> resouseList;
 
-        public Enemy(CharacterInfo ci, EnemyRadio enemyRadio)
+        public Enemy(eEnemy enemyType, Vector2 position, CharacterInfo ci, EnemyRadio enemyRadio)
             : base(ci)
         {
             this.enemyRadio = enemyRadio;
             actionRadio = enemyRadio.GetActionRadio();
+            this.enemyType = enemyType;
+            this.position = position;
+            resouseList = new List<Rectangle>();
         }
 
 
 
-        public void Initialize()
-        {
-            
+        public void Initialize() {
+            for (int i = 0; i < 12; i++) {
+                resouseList.Add( new Rectangle(i % 4, i / 4, Parameter.TileSize, Parameter.TileSize) );
+            }
         }
 
         public void Update()
@@ -42,9 +51,9 @@ namespace _2016RPGTeamWork.GameObjects
             
         }
 
-        public void Draw()
+        public void Draw(Renderer renderer)
         {
-            
+            renderer.DrawTexture("enemy", position, resouseList[(int)enemyType]);
         }
 
         public void Action(Character other)

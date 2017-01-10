@@ -1,8 +1,10 @@
 ﻿///作成日：2016.12.13
 ///作成者：ホームズ
 ///作成内容：キャラクターの基礎情報を格納するクラス
-///最後修正内容：各メソッド、アクセスモディファイヤに説明を追加しました。
-///最後修正日：2016.12.19
+///最後修正内容：Levelのget追加
+///最後修正者：柏
+///最後修正日：2017.1.9
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,6 +131,11 @@ namespace _2016RPGTeamWork.GameObjects
         {
             get { return speed; }
             set { speed = value; }
+        }
+
+        // 2017.1.9 by柏
+        public int Level {
+            get { return level; }
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.14
 ///作成者：柏
 ///作成内容：敵クラス
-///最後修正内容：描画できた
+///最後修正内容：敵のbattle行動完成
 ///最後修正者：柏
-///最後修正日：2017.1.8
+///最後修正日：2017.1.9
 
 using System;
 using System.Collections.Generic;
@@ -17,16 +17,17 @@ using Microsoft.Xna.Framework;
 
 namespace _2016RPGTeamWork.GameObjects
 {
-    
 
     class Enemy : Character
     {
         private EnemyRadio enemyRadio;
         private Dictionary<eAction, int> actionRadio;
-        private static Random rnd = new Random();
         private eEnemy enemyType;
         private Vector2 position;
         private List<Rectangle> resouseList;
+        private List<Character> playerList;
+        private eMagic_E magic;
+        private eTrick_E trick;
 
         public Enemy(eEnemy enemyType, Vector2 position, CharacterInfo ci, EnemyRadio enemyRadio)
             : base(ci)
@@ -36,41 +37,54 @@ namespace _2016RPGTeamWork.GameObjects
             this.enemyType = enemyType;
             this.position = position;
             resouseList = new List<Rectangle>();
+            playerList = new List<Character>();
         }
 
-
-
-        public void Initialize() {
+        public override void Initialize() {
             for (int i = 0; i < 12; i++) {
                 resouseList.Add( new Rectangle(i % 4, i / 4, Parameter.TileSize, Parameter.TileSize) );
             }
         }
 
-        public void Update()
-        {
-            
+        public override void Update() {
+            if (playerList.Count == 0) { return; }
+            Action(GetTarget(playerList));
         }
 
-        public void Draw(Renderer renderer)
-        {
+
+        public override void Draw(Renderer renderer) {
             renderer.DrawTexture("enemy", position, resouseList[(int)enemyType]);
         }
 
-        public void Action(Character other)
-        {
+        private void Action(Character other) {
             int act = rnd.Next(Parameter.MaxActionPercent);
-            switch (CheckAction(act))
-            {
-                case eAction.Attack: Attack(this, other); break;
-                case eAction.Defence: Defence(this, other); break;
-                case eAction.Escape: Escape(this, other); break;
-                case eAction.Magic: Magic(this, other); break;
-                case eAction.Trick: Trick(this, other); break;
+            switch (CheckAction(act)) {
+                case eAction.Attack: Attack(other); break;
+                case eAction.Defence: Defence(other); break;
+                case eAction.Escape: Escape(other); break;
+                case eAction.Magic: Magic(other); break;
+                case eAction.Trick: Trick(other); break;
             }
         }
 
-        private eAction CheckAction(int act)
-        {
+        public void SetMagic(eMagic_E magic) {
+            this.magic = magic;
+        }
+
+        public void SetTrick(eTrick_E trick) {
+            this.trick = trick;
+        }
+
+        public void GetPlayerList(List<Character> playerList) {
+            this.playerList = playerList;
+        }
+
+        private Character GetTarget(List<Character> playerList) {
+            if (playerList.Count == 0) { return null; }
+            return playerList[rnd.Next(playerList.Count)];
+        }
+
+        private eAction CheckAction(int act) {
             int attack = actionRadio[eAction.Attack];
             int defence = attack + actionRadio[eAction.Defence];
             int escape = defence + actionRadio[eAction.Escape];
@@ -85,11 +99,39 @@ namespace _2016RPGTeamWork.GameObjects
         }
 
 
-        private void Attack(Character this_E, Character other) { }
-        private void Magic(Character this_E, Character other) { }
-        private void Trick(Character this_E, Character other) { }
-        private void Escape(Character this_E, Character other) { }
-        private void Defence(Character this_E, Character other) { }
+        protected override void Attack(Character other) {
+            base.Attack(other);
+        }
+
+        protected override void Magic(Character other) {
+            int m_offence = DataManager.EnemyMagicData[(int)magic, (int)eMTParameter.Offence];
+            int m_magicOffence = DataManager.EnemyMagicData[(int)magic, (int)eMTParameter.MagicOffence];
+
+            int damageOffence = m_offence == 0 ? 0 : GetOffence + m_offence - other.GetDefence;
+            int damageMagicOffence = m_magicOffence == 0 ? 0 : GetMagicOffence + m_magicOffence - other.GetMagicDefence;
+
+            other.Damage(damageOffence); 
+            other.Damage(damageMagicOffence); 
+        }
+
+        protected override void Trick(Character other) {
+            int t_offence = DataManager.EnemyTrickData[(int)magic, (int)eMTParameter.Offence];
+            int t_magicOffence = DataManager.EnemyTrickData[(int)magic, (int)eMTParameter.MagicOffence];
+
+            int damageOffence = t_offence == 0 ? 0 : GetOffence + t_offence - other.GetDefence;
+            int damageMagicOffence = t_magicOffence == 0 ? 0 : GetMagicOffence + t_magicOffence - other.GetMagicDefence;
+
+            other.Damage(damageOffence);
+            other.Damage(damageMagicOffence);
+        }
+
+        protected override void Escape(Character other) {
+            base.Escape(other);
+        }
+
+        protected override void Defence(Character other) {
+            base.Defence(other);
+        }
 
 
     }

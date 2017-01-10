@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Def\Parameter.cs" />
+    <Compile Include="Device\DataManager.cs" />
     <Compile Include="Device\Loaders\BGMLoader.cs" />
     <Compile Include="Device\GameDevice.cs" />
     <Compile Include="Device\InputState.cs" />

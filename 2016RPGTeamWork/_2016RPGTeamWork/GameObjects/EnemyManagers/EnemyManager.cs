@@ -1,18 +1,17 @@
 ﻿///作成日：2016.12.26
 ///作成者：柏
 ///作成内容：敵まとめ管理用
-///最後修正内容：StageLoader改善によって調整、敵生成から描画の部分完成
+///最後修正内容：敵のbattle行動完成
 ///最後修正者：柏
-///最後修正日：2016.1.8
+///最後修正日：2017.1.9
 
-
-using _2016RPGTeamWork.Device;
-using _2016RPGTeamWork.Scene;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using _2016RPGTeamWork.Device;
+using Microsoft.Xna.Framework;
 
 namespace _2016RPGTeamWork.GameObjects.EnemyManagers
 {
@@ -32,6 +31,8 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         MagicRadio,
         TrickRadio,
         EscapeRadio,
+        MagicNum,
+        TrickNum,
     }
 
     enum eMagic_E
@@ -62,14 +63,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         Trick9,
     }
 
-    enum eAction
-    {
-        Attack,
-        Defence,
-        Escape,
-        Magic,
-        Trick,
-    }
+
 
     enum eMTParameter
     {
@@ -87,21 +81,57 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
 
     class EnemyManager
     {
-
-        private List<Enemy> enemyList;     //(enum)eMagic_Eの順番通りmagicを保存するList
-        private int[,] enemyData;
+        private List<Enemy> enemyList;
         private Vector2 basePosition;
         private Vector2 offsetPosition;
 
         public EnemyManager()
         {
             enemyList = new List<Enemy>();    //Listの初期化
-            enemyData = StageLoader.DataLoad("Enemy");
-            basePosition = new Vector2(200, 300);
-            offsetPosition = new Vector2(100, 0);
+            basePosition = new Vector2(200, 100);
+            offsetPosition = new Vector2(200, 0);
         }
 
         public void AddEnemy(eEnemy enemy) {
+            int[,] enemyData = DataManager.EnemyData;
+
+            CharacterInfo info = GetEnemyInfo(enemy, enemyData);
+            EnemyRadio radio = GetEnemyRadio(enemy, enemyData);
+            Vector2 position = basePosition + enemyList.Count * offsetPosition;
+            Enemy newEnemy = new Enemy(enemy, position, info, radio);
+
+            newEnemy.SetMagic((eMagic_E)enemyData[(int)enemy, (int)eEnemyData.MagicNum]);
+            newEnemy.SetTrick((eTrick_E)enemyData[(int)enemy, (int)eEnemyData.TrickNum]);
+            enemyList.Add(newEnemy);
+        }
+
+        public void InitEnemy() {
+            enemyList.ForEach(e => e.Initialize());
+        }
+
+        public void ClearEnemyList() {
+            enemyList.Clear();
+        }
+
+        public void Update() {
+            enemyList.ForEach(e => e.Update());
+        }
+
+        public void Draw(Renderer renderer) {
+            enemyList.ForEach(e => e.Draw(renderer));
+        }
+
+        public void GetPlayers(List<Character> players) {
+            enemyList.ForEach(e => e.GetPlayerList(players));
+        }
+
+        /// <summary>
+        /// エネミーのタイプによって、初期値取得 by柏 2017.1.9
+        /// </summary>
+        /// <param name="enemy">エネミータイプ</param>
+        /// <param name="enemyData">エネミー初期データ</param>
+        /// <returns></returns>
+        private CharacterInfo GetEnemyInfo(eEnemy enemy, int[,] enemyData) {
             CharacterInfo info = new CharacterInfo(
                 ((eEnemy)enemyData[(int)enemy, (int)eEnemyData.Name]).ToString(),
                 enemyData[(int)enemy, (int)eEnemyData.Level],
@@ -113,6 +143,16 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
                 enemyData[(int)enemy, (int)eEnemyData.MagicDefence],
                 enemyData[(int)enemy, (int)eEnemyData.Speed]
             );
+            return info;
+        }
+
+        /// <summary>
+        /// エネミーのタイプによって、行動比率取得 by柏 2017.1.9
+        /// </summary>
+        /// <param name="enemy">エネミータイプ</param>
+        /// <param name="enemyData">エネミー初期データ</param>
+        /// <returns></returns>
+        private EnemyRadio GetEnemyRadio(eEnemy enemy, int[,] enemyData) {
             EnemyRadio radio = new EnemyRadio(
                 enemyData[(int)enemy, (int)eEnemyData.AttackRadio],
                 enemyData[(int)enemy, (int)eEnemyData.DefenceRadio],
@@ -120,20 +160,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
                 enemyData[(int)enemy, (int)eEnemyData.TrickRadio],
                 enemyData[(int)enemy, (int)eEnemyData.EscapeRadio]
             );
-            enemyList.Add(new Enemy(enemy, basePosition + enemyList.Count * offsetPosition, info, radio));
+            return radio;
         }
-
-        public void Initialize() {
-            enemyList.ForEach(e => e.Initialize());
-        }
-
-        public void ClearEnemyList() {
-            enemyList.Clear();
-        }
-
-        public void Draw(Renderer renderer) {
-            enemyList.ForEach(e => e.Draw(renderer));
-        }
-
     }
 }

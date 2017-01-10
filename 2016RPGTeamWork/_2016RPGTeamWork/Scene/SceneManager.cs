@@ -83,6 +83,7 @@ namespace _2016RPGTeamWork.Scene
 
             if (((GamePlay)scenes[currentScene]).IsBattle) {
                 currentScene = eScene.BATTLE;
+                scenes[currentScene].Initialize();
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ゲームプレーシーン
-///最後修正内容：enemyManager追加、npc追加
+///最後修正内容：player追加
 ///最後修正者：柏
-///最後修正日：2017.1.8
+///最後修正日：2017.1.10
 
 using System.Collections.Generic;
 
@@ -12,8 +12,8 @@ using Microsoft.Xna.Framework;
 
 using _2016RPGTeamWork.Device;
 using _2016RPGTeamWork.Utility;
-using _2016RPGTeamWork.GameObjects.EnemyManagers;
 using _2016RPGTeamWork.NPC;
+using _2016RPGTeamWork.GameObjects;
 
 namespace _2016RPGTeamWork.Scene
 {
@@ -26,27 +26,35 @@ namespace _2016RPGTeamWork.Scene
         private Dictionary<int,string> textData;    //2016.12.20 by柏　文字表示用
         private int textNum;    //2016.12.20 by柏　文字表示用
         private Writer writer;    //2016.12.25 by柏　文字改行表示
-        private EnemyManager enemyManager;    //2017.1.8 by柏　battleのenemy追加
-        private List<NoPlayChara> npcList;    //2017.1.8 by柏　npc生成
 
-        public GamePlay(GameDevice gameDevice)
-        {
+        private List<NoPlayChara> npcList;    //2017.1.8 by柏　npc生成
+        private List<Character> players;
+        private Player player1;
+
+        public GamePlay(GameDevice gameDevice) {
             input = gameDevice.GetInputState();
+            players = new List<Character>();
+
+            CharacterInfo info = new CharacterInfo(
+                "player1", 1, 100, 50, 10, 5, 10, 5, 5 );
+
+            player1 = new Player(info, gameDevice);
+            players.Add(player1);
             Initialize();
         }
 
         /// <summary>
         /// 初期化
         /// </summary>
-        public void Initialize()
-        {
+        public void Initialize() {
             stage = new Stage();    //2016.12.20 by柏　stage管理
             stage.Initialize();    //2016.12.20 by柏　stage管理
             writer = new Writer();    //2016.12.25 by柏　文字改行表示
             writer.Initialize();    //2016.12.25 by柏　文字改行表示
-            enemyManager = new EnemyManager();
             npcList = stage.GetNPC;
             npcList.ForEach(n => n.Initialize());
+
+            players.ForEach(n => n.Initialize());
 
             endFlag = false;
             battleFlag = false;
@@ -58,23 +66,17 @@ namespace _2016RPGTeamWork.Scene
         /// 更新
         /// </summary>
         public void Update() {
-            npcList.ForEach(n => n.Update());
             GameInput();
+            players.ForEach(n => n.Update());
+            npcList.ForEach(n => n.Update());
         }
 
         private void GameInput() {
             if (input.IsKeyDown(Keys.Space)) { endFlag = true; }
-            else if (input.IsKeyDown(Keys.Z))
-            {
+            else if (input.IsKeyDown(Keys.Z)) {
                 battleFlag = !battleFlag;
-                if (battleFlag)
-                {
-                    enemyManager.AddEnemy(eEnemy.Slime);
-                    enemyManager.Initialize();
-                }
-                else {
-                    enemyManager.ClearEnemyList();
-                }
+                players.ForEach(n => ((Player)n).IsBattle = true);
+                SetPlayersPosition();
             }
             else if (input.IsKeyDown(Keys.X)) { TextUpdate(); }
         }
@@ -102,9 +104,7 @@ namespace _2016RPGTeamWork.Scene
             renderer.DrawTexture("gameplay", Vector2.Zero);
 
             npcList.ForEach(n => n.Draw(renderer)); //2017.1.8　by柏　npc描画
-
-            enemyManager.Draw(renderer);     //2017.1.8　by柏　enemy描画
-
+            players.ForEach(n => n.Draw(renderer)); //2017.1.10　by柏　player描画
 
             if (textNum < 0) { return; }
             writer.Draw(renderer);
@@ -124,8 +124,7 @@ namespace _2016RPGTeamWork.Scene
         /// バトルシーンに遷移
         /// </summary>
         /// <returns></returns>
-        public eScene ToBattle()
-        {
+        public eScene ToBattle() {
             return eScene.BATTLE;
         }
 
@@ -133,8 +132,7 @@ namespace _2016RPGTeamWork.Scene
         /// エンドフラッグをとる
         /// </summary>
         /// <returns></returns>
-        public bool IsEnd()
-        {
+        public bool IsEnd() {
             return endFlag;
         }
 
@@ -146,5 +144,20 @@ namespace _2016RPGTeamWork.Scene
             set { battleFlag = value; }
         }
 
+        /// <summary>
+        /// playersの取得
+        /// </summary>
+        public List<Character> GetPlayers {
+            get { return players; }
+        }
+
+        /// <summary>
+        /// バトルポジションを設定する
+        /// </summary>
+        private void SetPlayersPosition() {
+            for (int i = 0; i < players.Count;i++) {
+                ((Player)players[i]).SetBattlePosition(i);
+            }
+        }
     }
 }

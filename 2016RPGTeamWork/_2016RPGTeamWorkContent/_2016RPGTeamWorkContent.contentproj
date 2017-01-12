@@ -119,6 +119,10 @@
       <Name>Stage_WORLDMAP_DiaMap</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="CSV\Stage_WORLDMAP_NpcMap.csv">
+      <Name>Stage_WORLDMAP_NpcMap</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="CSV\Stage_WORLDMAP_Text.csv">
       <Name>Stage_WORLDMAP_Text</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

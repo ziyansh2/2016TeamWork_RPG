@@ -5,13 +5,13 @@
 ///最後修正者：。。
 ///最後修正日：。。
 
-
-using _2016RPGTeamWork.Scene;
-using _2016RPGTeamWork.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using _2016RPGTeamWork.Def;
+using _2016RPGTeamWork.Utility;
 
 namespace _2016RPGTeamWork.NPC
 {
@@ -22,7 +22,7 @@ namespace _2016RPGTeamWork.NPC
         }
 
         public void Initialize() {
-            int[,] dialogueCorData = StageLoader.DataLoad("dialogueCor_Text");
+            int[,] dialogueCorData = DataLoader.DataLoad("dialogueCor_Text");
             for (int i = 0; i < dialogueCorData.GetLength(0); i++) {
                 dialogueCor.Add(new Range(dialogueCorData[i,0], dialogueCorData[i,1]));
             }

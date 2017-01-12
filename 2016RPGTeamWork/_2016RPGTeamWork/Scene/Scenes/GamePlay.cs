@@ -1,7 +1,7 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ゲームプレーシーン
-///最後修正内容：player追加
+///最後修正内容：camera追加
 ///最後修正者：柏
 ///最後修正日：2017.1.10
 
@@ -28,8 +28,9 @@ namespace _2016RPGTeamWork.Scene
         private Writer writer;    //2016.12.25 by柏　文字改行表示
 
         private List<NoPlayChara> npcList;    //2017.1.8 by柏　npc生成
-        private List<Character> players;
+        private List<Character> players;    //2017.1.9 by柏　player生成
         private Player player1;
+        private Camera camera;    //2017.1.10 by柏　camera生成
 
         public GamePlay(GameDevice gameDevice) {
             input = gameDevice.GetInputState();
@@ -40,6 +41,7 @@ namespace _2016RPGTeamWork.Scene
 
             player1 = new Player(info, gameDevice);
             players.Add(player1);
+            camera = new Camera(player1.Position);
             Initialize();
         }
 
@@ -53,8 +55,9 @@ namespace _2016RPGTeamWork.Scene
             writer.Initialize();    //2016.12.25 by柏　文字改行表示
             npcList = stage.GetNPC;
             npcList.ForEach(n => n.Initialize());
-
             players.ForEach(n => n.Initialize());
+            players.ForEach(n => ((Player)n).SetMapData(stage.GetMapData()));
+            camera.SetStage(stage);
 
             endFlag = false;
             battleFlag = false;
@@ -69,6 +72,9 @@ namespace _2016RPGTeamWork.Scene
             GameInput();
             players.ForEach(n => n.Update());
             npcList.ForEach(n => n.Update());
+
+            if (players.Count == 0) { return; }
+            camera.NextViewPort(player1.Position);
         }
 
         private void GameInput() {
@@ -100,11 +106,11 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         /// <param name="renderer"></param>
         public void Draw(Renderer renderer) {
-            stage.Draw(renderer);    //2016.12.20 by柏　stage描画用
+            stage.Draw(renderer, camera.GetIsMoved_P);    //2017.1.10 by柏　camera実装
             renderer.DrawTexture("gameplay", Vector2.Zero);
 
-            npcList.ForEach(n => n.Draw(renderer)); //2017.1.8　by柏　npc描画
-            players.ForEach(n => n.Draw(renderer)); //2017.1.10　by柏　player描画
+            npcList.ForEach(n => n.Draw(renderer, camera.GetIsMoved_P)); //2017.1.8　by柏　npc描画
+            players.ForEach(n => ((Player)n).Draw(renderer,camera.GetIsMoved_P)); //2017.1.10　by柏　player描画
 
             if (textNum < 0) { return; }
             writer.Draw(renderer);

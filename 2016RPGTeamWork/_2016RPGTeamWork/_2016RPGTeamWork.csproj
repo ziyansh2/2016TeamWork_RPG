@@ -72,8 +72,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Def\DataLoader.cs" />
+    <Compile Include="Def\Method.cs" />
     <Compile Include="Def\Parameter.cs" />
-    <Compile Include="Device\DataManager.cs" />
+    <Compile Include="Device\Camera.cs" />
     <Compile Include="Device\Loaders\BGMLoader.cs" />
     <Compile Include="Device\GameDevice.cs" />
     <Compile Include="Device\InputState.cs" />
@@ -88,8 +90,6 @@
     <Compile Include="GameObjects\CharacterInfo.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
     <Compile Include="GameObjects\EnemyManagers\EnemyManager.cs" />
-    <Compile Include="GameObjects\EnemyManagers\MagicManager_E.cs" />
-    <Compile Include="GameObjects\EnemyManagers\TrickManager_E.cs" />
     <Compile Include="GameObjects\EnemyRadio.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="NPC\DialogueManager.cs" />
@@ -109,7 +109,6 @@
     <Compile Include="Scene\SceneManager.cs" />
     <Compile Include="Scene\Scenes\Title.cs" />
     <Compile Include="Scene\Stage.cs" />
-    <Compile Include="Scene\StageLoader.cs" />
     <Compile Include="Utility\Range.cs" />
     <Compile Include="Utility\Timer.cs" />
     <Compile Include="Utility\Writer.cs" />

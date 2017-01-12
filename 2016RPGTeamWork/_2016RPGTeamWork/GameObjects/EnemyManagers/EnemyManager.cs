@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using _2016RPGTeamWork.Device;
 using Microsoft.Xna.Framework;
+
+using _2016RPGTeamWork.Device;
+using _2016RPGTeamWork.Def;
 
 namespace _2016RPGTeamWork.GameObjects.EnemyManagers
 {
@@ -93,7 +95,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         }
 
         public void AddEnemy(eEnemy enemy) {
-            int[,] enemyData = DataManager.EnemyData;
+            int[,] enemyData = Method.EnemyData;
 
             CharacterInfo info = GetEnemyInfo(enemy, enemyData);
             EnemyRadio radio = GetEnemyRadio(enemy, enemyData);

@@ -10,10 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 using _2016RPGTeamWork.Def;
 using _2016RPGTeamWork.GameObjects.EnemyManagers;
 using _2016RPGTeamWork.Device;
-using Microsoft.Xna.Framework;
 
 namespace _2016RPGTeamWork.GameObjects
 {
@@ -104,8 +105,8 @@ namespace _2016RPGTeamWork.GameObjects
         }
 
         protected override void Magic(Character other) {
-            int m_offence = DataManager.EnemyMagicData[(int)magic, (int)eMTParameter.Offence];
-            int m_magicOffence = DataManager.EnemyMagicData[(int)magic, (int)eMTParameter.MagicOffence];
+            int m_offence = Method.GetMagicList()[(int)magic][(int)eMTParameter.Offence];
+            int m_magicOffence = Method.GetMagicList()[(int)magic][(int)eMTParameter.MagicOffence];
 
             int damageOffence = m_offence == 0 ? 0 : GetOffence + m_offence - other.GetDefence;
             int damageMagicOffence = m_magicOffence == 0 ? 0 : GetMagicOffence + m_magicOffence - other.GetMagicDefence;
@@ -115,8 +116,8 @@ namespace _2016RPGTeamWork.GameObjects
         }
 
         protected override void Trick(Character other) {
-            int t_offence = DataManager.EnemyTrickData[(int)magic, (int)eMTParameter.Offence];
-            int t_magicOffence = DataManager.EnemyTrickData[(int)magic, (int)eMTParameter.MagicOffence];
+            int t_offence = Method.GetTrickList()[(int)trick][(int)eMTParameter.Offence];
+            int t_magicOffence = Method.GetTrickList()[(int)trick][(int)eMTParameter.MagicOffence];
 
             int damageOffence = t_offence == 0 ? 0 : GetOffence + t_offence - other.GetDefence;
             int damageMagicOffence = t_magicOffence == 0 ? 0 : GetMagicOffence + t_magicOffence - other.GetMagicDefence;

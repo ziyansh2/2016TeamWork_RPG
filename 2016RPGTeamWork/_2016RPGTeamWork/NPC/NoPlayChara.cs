@@ -53,8 +53,8 @@ namespace _2016RPGTeamWork.NPC
         /// 描画
         /// </summary>
         /// <param name="renderer">描画管理</param>
-        public void Draw(Renderer renderer) {
-            renderer.DrawTexture("puddle", position, motion.DrawRange());
+        public void Draw(Renderer renderer, Vector2 offset) {
+            renderer.DrawTexture("puddle", position + offset, motion.DrawRange());
         }
 
     }

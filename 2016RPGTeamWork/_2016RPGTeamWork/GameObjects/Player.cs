@@ -1,7 +1,7 @@
 ﻿///作成日：2016.12.19
 ///作成者：ホームズ
 ///作成内容：プレイヤークラス
-///最後修正内容：移動、描画、アニメーション、バトル
+///最後修正内容：位置の取得
 ///最後修正者：柏
 ///最後修正日：2017.1.10
 
@@ -23,13 +23,17 @@ namespace _2016RPGTeamWork.GameObjects
     {
         private Motion motion;
         private Vector2 position;
+        private Vector2 scollPosition;
         private Vector2 battlePosition; //by柏　戦闘用追加
+        private Vector2 direction;   //by柏　移動用追加
         private InputState input;
         private bool isBattle; //by柏　戦闘用追加
+        private int[,] mapData;
 
         public Player(CharacterInfo ci, GameDevice gameDevice) : base(ci)
         {
-            position = Vector2.Zero;
+            position = new Vector2(100, 100);
+            direction = Vector2.Zero;
             input = gameDevice.GetInputState();
             isBattle = false;
         }
@@ -63,6 +67,21 @@ namespace _2016RPGTeamWork.GameObjects
             motion.Update(); 
         }
 
+        public bool Collision() {
+            for (int y = 0; y < mapData.GetLength(0); y++) {
+                for (int x = 0; x < mapData.GetLength(1); x++) {
+                    if (mapData[y, x] > 3) {
+                        Rectangle other = new Rectangle(
+                            x * Parameter.TileSize, y * Parameter.TileSize,
+                            Parameter.TileSize, Parameter.TileSize);
+                        if (IsCollision(other)) { return true; }
+                    }
+                }
+            }
+            return false;
+        }
+
+
         //by柏　戦闘　2017.1.10
         public void Battle() {
 
@@ -74,17 +93,19 @@ namespace _2016RPGTeamWork.GameObjects
         /// <param name="keyState">キーボード入力</param>
         private void Move(KeyboardState keyState) {
             if (keyState.IsKeyDown(Keys.Right)) {
-                position.X += 3;
+                direction = new Vector2(1, 0);
             }
             else if (keyState.IsKeyDown(Keys.Left)) {
-                position.X -= 3;
+                direction = new Vector2(-1, 0);
             }
             else if (keyState.IsKeyDown(Keys.Up)) {
-                position.Y -= 3;
+                direction = new Vector2(0, -1);
             }
             else if (keyState.IsKeyDown(Keys.Down)) {
-                position.Y += 3;
+                direction = new Vector2(0, 1);
             }
+            else { direction = Vector2.Zero; }
+            position += direction * Parameter.PlayerSpeed;
         }
 
         /// <summary>
@@ -105,13 +126,25 @@ namespace _2016RPGTeamWork.GameObjects
         /// <summary>
         /// 描画
         /// </summary>
-        public override void Draw(Renderer renderer)
+        public void Draw(Renderer renderer, Vector2 offset)
         {
             if (isBattle) {
                 renderer.DrawTexture("player1", battlePosition, motion.DrawRange());
                 return;
             }
-            renderer.DrawTexture("player1", position, motion.DrawRange());
+            renderer.DrawTexture("player1", position + offset, motion.DrawRange());
+        }
+
+        /// <summary>
+        /// 描画
+        /// </summary>
+        public override void Draw(Renderer renderer) {
+            Vector2 centerOffset = Parameter.CharaCenterOffset;
+            if (isBattle) {
+                renderer.DrawTexture("player1", battlePosition + centerOffset, motion.DrawRange());
+                return;
+            }
+            renderer.DrawTexture("player1", position + centerOffset, motion.DrawRange());
         }
 
         /// <summary>
@@ -127,5 +160,18 @@ namespace _2016RPGTeamWork.GameObjects
             int offsetX = index * 200;
             battlePosition.X += offsetX;
         }
+
+        /// <summary>
+        /// 位置の取得　by柏　2017.1.10
+        /// </summary>
+        public Vector2 Position { get { return position; } }
+        public Vector2 Direction {
+            get { return direction; }
+        }
+
+        public void SetMapData(int[,] mapData) {
+            this.mapData = mapData;
+        }
+
     }
 }

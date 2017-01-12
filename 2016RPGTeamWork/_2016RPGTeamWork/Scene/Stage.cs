@@ -47,18 +47,19 @@ namespace _2016RPGTeamWork.Scene
         /// 初期化
         /// </summary>
         public void Initialize() {
-            mapData = StageLoader.MapLoad(currentStage);
+            mapData = DataLoader.MapLoad(currentStage);
 
             //2016.12.20 by柏 文字データを読み取る
-            textData = StageLoader.TextLoad(currentStage);
+            textData = DataLoader.TextLoad(currentStage);
 
             //2016.12.20 by柏 NPCデータを読み取る
-            int[,] dialogueCorData = StageLoader.DataLoad("dialogueCor_Text");
-            int[,] dialogueMapData = StageLoader.DialogueMapLoad(currentStage);
+            int[,] dialogueCorData = DataLoader.DataLoad("dialogueCor_Text");
+            int[,] dialogueMapData = DataLoader.DialogueMapLoad(currentStage);
+            int[,] npcMapData      = DataLoader.NpcMapLoad(currentStage);
 
             //2017.1.8 by柏 NPC生成
             npcList = new List<NoPlayChara>();
-            CreatNpc(dialogueCorData, dialogueMapData);
+            CreatNpc(dialogueCorData, dialogueMapData, npcMapData);
         }
 
         /// <summary>
@@ -66,10 +67,10 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         /// <param name="dialogueCorData">セリフの段落</param>
         /// <param name="dialogueMapData">npcのマップ位置対応</param>
-        private void CreatNpc(int[,] dialogueCorData, int[,] dialogueMapData) {
-            for (int y = 0; y < mapData.GetLength(0); y++) {
-                for (int x = 0; x < mapData.GetLength(1); x++) {
-                    switch (mapData[y, x]) {
+        private void CreatNpc(int[,] dialogueCorData, int[,] dialogueMapData, int[,] npcMapData) {
+            for (int y = 0; y < npcMapData.GetLength(0); y++) {
+                for (int x = 0; x < npcMapData.GetLength(1); x++) {
+                    switch (npcMapData[y, x]) {
                         case 24:
                             CreatNpcOne(x, y, dialogueCorData, dialogueMapData, new MoveNone());
                             break;
@@ -104,14 +105,14 @@ namespace _2016RPGTeamWork.Scene
         /// 描画
         /// </summary>
         /// <param name="renderer"></param>
-        public void Draw(Renderer renderer) {
+        public void Draw(Renderer renderer, Vector2 offset) {
             for (int y = 0; y < mapData.GetLength(0); y++) {
                 for (int x = 0; x < mapData.GetLength(1); x++) {
                     renderer.DrawTexture("mapsource",
-                        new Vector2(x * Parameter.TileSize, y * Parameter.TileSize),
+                        new Vector2(x * Parameter.TileSize, y * Parameter.TileSize) + offset,
                         new Rectangle(
-                            mapData[y, x] * Parameter.TileSize, 
-                            mapData[y, x] * Parameter.TileSize, 
+                            (mapData[y, x] % 4) * Parameter.TileSize, 
+                            (mapData[y, x] / 4) * Parameter.TileSize, 
                             Parameter.TileSize, 
                             Parameter.TileSize)
                         );
@@ -131,6 +132,16 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         public Dictionary<int,string> GetTextData {
             get { return textData; }
+        }
+
+        public Vector2 GetStageScale() {
+            int width = mapData.GetLength(1) * Parameter.TileSize;
+            int height = mapData.GetLength(0) * Parameter.TileSize;
+            return new Vector2(width, height);
+        }
+
+        public int[,] GetMapData() {
+            return mapData;
         }
     }
 }

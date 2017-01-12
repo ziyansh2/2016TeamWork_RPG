@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.13
 ///作成者：ホームズ
 ///作成内容：キャラクターの抽象クラス
-///最後修正内容：バトル動作に関する内容追加
+///最後修正内容：あたり判定追加
 ///最後修正者：柏
-///最後修正日：2016.1.9
+///最後修正日：2016.1.11
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 
 using _2016RPGTeamWork.Device;
+using Microsoft.Xna.Framework;
+using _2016RPGTeamWork.Def;
 
 namespace _2016RPGTeamWork.GameObjects
 {
@@ -40,6 +42,7 @@ namespace _2016RPGTeamWork.GameObjects
         protected bool isEscape;      //逃走フラグ    2017.1.9 by柏
         protected bool isDefence;     //防御フラグ    2017.1.9 by柏
         protected static Random rnd = new Random();     //2017.1.9 by柏
+        protected Vector2 position;   //Charaの位置   2017.1.11 by柏
 
         public Character(CharacterInfo ci)
         {
@@ -132,5 +135,30 @@ namespace _2016RPGTeamWork.GameObjects
 
         // 2017.1.9 by柏
         public int GetLevel { get { return characterInfo.Level; } }
+
+        //2017.1.12 by柏
+        public Vector2 Position { get { return position; } }
+
+        /// <summary>
+        /// 自分の当たり範囲を出す　by柏　2017.1.11
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetRect() {
+            int x = (int)(position.X - Parameter.CharaCenterOffset.X);
+            int y = (int)(position.Y - Parameter.CharaCenterOffset.Y);
+            Rectangle thisRect = new Rectangle(x, y, Parameter.TileSize, Parameter.TileSize);
+            return thisRect;
+        }
+
+        /// <summary>
+        /// 当たり判定　by柏　2017.1.11
+        /// </summary>
+        /// <param name="other">判定対象</param>
+        /// <returns></returns>
+        public bool IsCollision(Rectangle other)
+        {
+            return GetRect().Intersects(other);
+        }
+
     }
 }

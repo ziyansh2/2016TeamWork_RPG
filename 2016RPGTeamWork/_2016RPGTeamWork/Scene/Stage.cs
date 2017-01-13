@@ -30,6 +30,7 @@ namespace _2016RPGTeamWork.Scene
         private int[,] mapData;
         private Dictionary<int, string> textData;    //2016.12.20 by柏 読み取った文字データ保存用
         private List<NoPlayChara> npcList;
+        private Vector2 playerPosition; //2017.1.14 by柏 PLAYER中心スクリーン範囲描画するため
 
         public Stage() {
             currentStage = eStage.WORLDMAP;
@@ -43,6 +44,9 @@ namespace _2016RPGTeamWork.Scene
             currentStage = stage;
         }
 
+        public void SetPlayerPosition(Vector2 playerPosition) {
+            this.playerPosition = playerPosition;
+        }
         /// <summary>
         /// 初期化
         /// </summary>
@@ -102,22 +106,50 @@ namespace _2016RPGTeamWork.Scene
 
 
         /// <summary>
-        /// 描画
+        /// 範囲描画
         /// </summary>
         /// <param name="renderer"></param>
         public void Draw(Renderer renderer, Vector2 offset) {
-            for (int y = 0; y < mapData.GetLength(0); y++) {
-                for (int x = 0; x < mapData.GetLength(1); x++) {
-                    renderer.DrawTexture("mapsource",
-                        new Vector2(x * Parameter.TileSize, y * Parameter.TileSize) + offset,
-                        new Rectangle(
-                            (mapData[y, x] % 4) * Parameter.TileSize, 
-                            (mapData[y, x] / 4) * Parameter.TileSize, 
-                            Parameter.TileSize, 
-                            Parameter.TileSize)
-                        );
+            int size = Parameter.TileSize;
+            Vector2 playerXP = GetMapXY(playerPosition);
+            Vector2 scaleMin = playerXP - GetVeiwScale();
+            Vector2 scaleMax = playerXP + GetVeiwScale();
+            for (int j = (int)scaleMin.Y; j < (int)scaleMax.Y; j++) {
+                for (int i = (int)scaleMin.X; i < (int)scaleMax.X; i++) {
+                    if (!IsInStage(i,j)) { continue; }
+                    Rectangle rect = new Rectangle((mapData[j, i] % 4) * size, (mapData[j, i] / 4) * size, size, size);
+                    renderer.DrawTexture("mapsource", new Vector2(i * size, j * size) + offset,rect);
                 }
             }
+        }
+
+        /// <summary>
+        /// Map座標の取得  by柏　2017.1.14　範囲描画のために追加
+        /// </summary>
+        /// <param name="position">位置</param>
+        /// <returns></returns>
+        private Vector2 GetMapXY(Vector2 position) {
+            int size = Parameter.TileSize;
+            int X = (int)position.X / size;
+            int Y = (int)position.Y / size;
+            return new Vector2(X, Y);
+        }
+
+        /// <summary>
+        /// 描画範囲の取得  by柏　2017.1.14　範囲描画のために追加
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GetVeiwScale() {
+            int size = Parameter.TileSize;
+            int screenHalfW = Parameter.ScreenWidth / size / 2;
+            int screenHalfH = Parameter.ScreenHeight / size / 2;
+            return new Vector2(screenHalfW, screenHalfH);   //範囲はスクリーンの半分
+        }
+
+        private bool IsInStage(int X,int Y) {
+            if (Y < 0 || X < 0) { return false; }
+            if (Y >= mapData.GetLength(0) || X >= mapData.GetLength(1)) { return false; }
+            return true;
         }
         
         /// <summary>

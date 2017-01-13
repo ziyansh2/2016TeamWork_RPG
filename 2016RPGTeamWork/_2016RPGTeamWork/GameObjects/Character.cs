@@ -42,7 +42,7 @@ namespace _2016RPGTeamWork.GameObjects
         protected bool isEscape;      //逃走フラグ    2017.1.9 by柏
         protected bool isDefence;     //防御フラグ    2017.1.9 by柏
         protected static Random rnd = new Random();     //2017.1.9 by柏
-        protected Vector2 position;   //Charaの位置   2017.1.11 by柏
+        protected Vector2 position;   //Charaの位置(画像の中心)   2017.1.11 by柏
 
         public Character(CharacterInfo ci)
         {
@@ -144,21 +144,13 @@ namespace _2016RPGTeamWork.GameObjects
         /// </summary>
         /// <returns></returns>
         public Rectangle GetRect() {
-            int x = (int)(position.X - Parameter.CharaCenterOffset.X);
-            int y = (int)(position.Y - Parameter.CharaCenterOffset.Y);
+            int x = (int)(position.X);
+            int y = (int)(position.Y);
             Rectangle thisRect = new Rectangle(x, y, Parameter.TileSize, Parameter.TileSize);
             return thisRect;
         }
 
-        /// <summary>
-        /// 当たり判定　by柏　2017.1.11
-        /// </summary>
-        /// <param name="other">判定対象</param>
-        /// <returns></returns>
-        public bool IsCollision(Rectangle other)
-        {
-            return GetRect().Intersects(other);
-        }
+
 
     }
 }

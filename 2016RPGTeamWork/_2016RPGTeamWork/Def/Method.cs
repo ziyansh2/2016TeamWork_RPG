@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 
 using _2016RPGTeamWork.GameObjects.EnemyManagers;
+using Microsoft.Xna.Framework;
 
 namespace _2016RPGTeamWork.Def
 {
@@ -59,6 +60,18 @@ namespace _2016RPGTeamWork.Def
             }
             return magicList;
         }
+
+        /// <summary>
+        /// 当たり判定　by柏　2017.1.11
+        /// </summary>
+        /// <param name="other">判定対象</param>
+        /// <returns></returns>
+        public static bool IsCollision(Rectangle obj1, Rectangle obj2)
+        {
+            return obj1.Intersects(obj2);
+        }
+
+
 
     }
 }

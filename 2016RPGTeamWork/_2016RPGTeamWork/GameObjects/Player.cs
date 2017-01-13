@@ -68,13 +68,15 @@ namespace _2016RPGTeamWork.GameObjects
         }
 
         public bool Collision() {
-            for (int y = 0; y < mapData.GetLength(0); y++) {
-                for (int x = 0; x < mapData.GetLength(1); x++) {
-                    if (mapData[y, x] > 3) {
+            int x = (int)position.X / Parameter.TileSize;
+            int y = (int)position.Y / Parameter.TileSize;
+            for (int j = y - 1; j <= y + 1; j++) {
+                for (int i = x - 1; i <= x + 1; i++) {
+                    if (mapData[i, j] < 0) {
                         Rectangle other = new Rectangle(
-                            x * Parameter.TileSize, y * Parameter.TileSize,
+                            i * Parameter.TileSize, j * Parameter.TileSize,
                             Parameter.TileSize, Parameter.TileSize);
-                        if (IsCollision(other)) { return true; }
+                        if (Method.IsCollision(GetRect(), other)) { return true; }
                     }
                 }
             }
@@ -92,6 +94,7 @@ namespace _2016RPGTeamWork.GameObjects
         /// </summary>
         /// <param name="keyState">キーボード入力</param>
         private void Move(KeyboardState keyState) {
+            if (Collision()) { return; }
             if (keyState.IsKeyDown(Keys.Right)) {
                 direction = new Vector2(1, 0);
             }

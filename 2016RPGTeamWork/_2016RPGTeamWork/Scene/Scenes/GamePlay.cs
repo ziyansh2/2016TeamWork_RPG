@@ -74,6 +74,7 @@ namespace _2016RPGTeamWork.Scene
             npcList.ForEach(n => n.Update());
 
             if (players.Count == 0) { return; }
+            stage.SetPlayerPosition(player1.Position);
             camera.NextViewPort(player1.Position);
         }
 

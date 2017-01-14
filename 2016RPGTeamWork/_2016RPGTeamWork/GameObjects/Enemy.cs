@@ -53,7 +53,7 @@ namespace _2016RPGTeamWork.GameObjects
         }
 
 
-        public override void Draw(Renderer renderer) {
+        public override void Draw(Renderer renderer, Vector2 offset) {
             renderer.DrawTexture("enemy", position, resouseList[(int)enemyType]);
         }
 

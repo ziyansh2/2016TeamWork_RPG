@@ -59,7 +59,7 @@ namespace _2016RPGTeamWork.GameObjects
         // by柏　2017.1.10
         public abstract void Initialize();
         // by柏　2017.1.10
-        public abstract void Draw(Renderer renderer);
+        public abstract void Draw(Renderer renderer, Vector2 offset);
 
         public void Damage(int amount) {
             if (isDefence) { amount /= 2; } //防御中ダメージ半減　by柏　2017.1.9
@@ -140,12 +140,12 @@ namespace _2016RPGTeamWork.GameObjects
         public Vector2 Position { get { return position; } }
 
         /// <summary>
-        /// 自分の当たり範囲を出す　by柏　2017.1.11
+        /// 自分の当たる範囲を出す　by柏　2017.1.11
         /// </summary>
         /// <returns></returns>
-        public Rectangle GetRect() {
-            int x = (int)(position.X);
-            int y = (int)(position.Y);
+        public Rectangle GetRect(Vector2 offset) {
+            int x = (int)(position.X + offset.X);
+            int y = (int)(position.Y + offset.Y);
             Rectangle thisRect = new Rectangle(x, y, Parameter.TileSize, Parameter.TileSize);
             return thisRect;
         }

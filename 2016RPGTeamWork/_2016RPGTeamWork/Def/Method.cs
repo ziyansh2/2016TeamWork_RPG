@@ -66,12 +66,39 @@ namespace _2016RPGTeamWork.Def
         /// </summary>
         /// <param name="other">判定対象</param>
         /// <returns></returns>
-        public static bool IsCollision(Rectangle obj1, Rectangle obj2)
-        {
+        public static bool IsCollision(Rectangle obj1, Rectangle obj2) {
             return obj1.Intersects(obj2);
         }
 
+        /// <summary>
+        /// stage範囲内判定　by柏　2017.1.11
+        /// </summary>
+        /// <param name="X">マップチップX座標</param>
+        /// <param name="Y">マップチップY座標</param>
+        /// <param name="mapData">マップチップデータ</param>
+        /// <returns></returns>
+        public static bool IsInStage(int X, int Y, int[,] mapData) {
+            if (Y < 0 || X < 0) { return false; }
+            if (Y >= mapData.GetLength(0) || X >= mapData.GetLength(1)) { return false; }
+            return true;
+        }
 
+        /// <summary>
+        /// stage大きさの取得　by柏　2017.1.11
+        /// </summary>
+        /// <param name="mapData">マップチップデータ</param>
+        /// <returns></returns>
+        public static Vector2 GetStageScale(int[,]mapData) {
+            int scaleX = mapData.GetLength(1) * Parameter.TileSize;
+            int scaleY = mapData.GetLength(0) * Parameter.TileSize;
+            return new Vector2(scaleX, scaleY);
+        }
+
+        public static Vector2 GetMapXY(Vector2 position) {
+            int x = (int)(position.X) / Parameter.TileSize;
+            int y = (int)(position.Y) / Parameter.TileSize;
+            return new Vector2(x, y);
+        }
 
     }
 }

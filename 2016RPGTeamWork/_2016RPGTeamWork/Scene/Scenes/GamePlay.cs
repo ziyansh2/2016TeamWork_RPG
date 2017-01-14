@@ -108,9 +108,9 @@ namespace _2016RPGTeamWork.Scene
         /// <param name="renderer"></param>
         public void Draw(Renderer renderer) {
             stage.Draw(renderer, camera.GetIsMoved_P);    //2017.1.10 by柏　camera実装
-            renderer.DrawTexture("gameplay", Vector2.Zero);
+            //renderer.DrawTexture("gameplay", Vector2.Zero);
 
-            npcList.ForEach(n => n.Draw(renderer, camera.GetIsMoved_P)); //2017.1.8　by柏　npc描画
+            npcList.ForEach(n => n.Draw(renderer, camera.GetIsMoved_P)); //2017.1.10 by柏　camera実装
             players.ForEach(n => ((Player)n).Draw(renderer,camera.GetIsMoved_P)); //2017.1.10　by柏　player描画
 
             if (textNum < 0) { return; }

@@ -112,13 +112,14 @@ namespace _2016RPGTeamWork.Scene
         public void Draw(Renderer renderer, Vector2 offset) {
             int size = Parameter.TileSize;
             Vector2 playerXP = GetMapXY(playerPosition);
-            Vector2 scaleMin = playerXP - GetVeiwScale();
-            Vector2 scaleMax = playerXP + GetVeiwScale();
+            Vector2 scaleMin = playerXP - GetViewScale();
+            Vector2 scaleMax = playerXP + GetViewScale();
+
             for (int j = (int)scaleMin.Y; j < (int)scaleMax.Y; j++) {
                 for (int i = (int)scaleMin.X; i < (int)scaleMax.X; i++) {
-                    if (!IsInStage(i,j)) { continue; }
+                    if (!Method.IsInStage(i, j, mapData)) { continue; }
                     Rectangle rect = new Rectangle((mapData[j, i] % 4) * size, (mapData[j, i] / 4) * size, size, size);
-                    renderer.DrawTexture("mapsource", new Vector2(i * size, j * size) + offset,rect);
+                    renderer.DrawTexture("mapsource", new Vector2(i * size, j * size) + offset, rect);
                 }
             }
         }
@@ -139,17 +140,11 @@ namespace _2016RPGTeamWork.Scene
         /// 描画範囲の取得  by柏　2017.1.14　範囲描画のために追加
         /// </summary>
         /// <returns></returns>
-        private Vector2 GetVeiwScale() {
+        private Vector2 GetViewScale() {
             int size = Parameter.TileSize;
             int screenHalfW = Parameter.ScreenWidth / size / 2;
             int screenHalfH = Parameter.ScreenHeight / size / 2;
             return new Vector2(screenHalfW, screenHalfH);   //範囲はスクリーンの半分
-        }
-
-        private bool IsInStage(int X,int Y) {
-            if (Y < 0 || X < 0) { return false; }
-            if (Y >= mapData.GetLength(0) || X >= mapData.GetLength(1)) { return false; }
-            return true;
         }
         
         /// <summary>

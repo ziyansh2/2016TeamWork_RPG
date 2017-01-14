@@ -120,7 +120,7 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
         }
 
         public void Draw(Renderer renderer) {
-            enemyList.ForEach(e => e.Draw(renderer));
+            enemyList.ForEach(e => e.Draw(renderer,Vector2.Zero));
         }
 
         public void GetPlayers(List<Character> players) {

@@ -31,29 +31,30 @@ namespace _2016RPGTeamWork.Device
         }
 
         public void NextViewPort(Vector2 viewPort) {
-            isMoved_P.X = (Parameter.ScreenWidth - Parameter.TileSize) / 2 - viewPort.X;
+            isMoved_P.X = (Parameter.ScreenWidth  - Parameter.TileSize) / 2 - viewPort.X;
             isMoved_P.Y = (Parameter.ScreenHeight - Parameter.TileSize) / 2 - viewPort.Y;
-            CheckCamera(viewPort);
+            CheckCamera(viewPort);    //範囲内に収める
         }
 
-        private void CheckCamera(Vector2 viewPort)
-        {
+        /// <summary>
+        /// 映っている範囲の画面外チェック
+        /// </summary>
+        /// <param name="viewPort">映リたい画面中心</param>
+        private void CheckCamera(Vector2 viewPort) {
             Vector2 stageScale = stage.GetStageScale();
+            Vector2 viewLT = viewPort - new Vector2((Parameter.ScreenWidth - Parameter.TileSize) / 2, (Parameter.ScreenHeight - Parameter.TileSize) / 2);
+            Vector2 viewRB = viewPort + new Vector2((Parameter.ScreenWidth + Parameter.TileSize) / 2, (Parameter.ScreenHeight + Parameter.TileSize) / 2);
 
-            if (viewPort.X - (Parameter.ScreenWidth - Parameter.TileSize) / 2 < 0)
-            {
+            if (viewLT.X < 0) { //Left
                 isMoved_P.X = 0 ;
             }
-            if (viewPort.X + (Parameter.ScreenWidth + Parameter.TileSize) / 2 > stageScale.X)
-            {
-                isMoved_P.X = Parameter.ScreenWidth - stageScale.X;
-            }
-            if (viewPort.Y - (Parameter.ScreenHeight - Parameter.TileSize) / 2 < 0)
-            {
+            if (viewLT.Y < 0) { //Top
                 isMoved_P.Y = 0;
             }
-            if (viewPort.Y + (Parameter.ScreenHeight + Parameter.TileSize) / 2> stageScale.Y)
-            {
+            if (viewRB.X > stageScale.X) {  //Right
+                isMoved_P.X = Parameter.ScreenWidth - stageScale.X;
+            }
+            if (viewRB.Y > stageScale.Y) {  //Bottom
                 isMoved_P.Y = Parameter.ScreenHeight - stageScale.Y;
             }
         }

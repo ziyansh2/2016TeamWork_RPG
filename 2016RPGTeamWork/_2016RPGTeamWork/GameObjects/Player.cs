@@ -1,15 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：ホームズ
 ///作成内容：プレイヤークラス
-///最後修正内容：位置の取得
+///最後修正内容：マップとのあたり判定実装
 ///最後修正者：柏
-///最後修正日：2017.1.10
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+///最後修正日：2017.1.14
 
 using _2016RPGTeamWork.Def;
 using _2016RPGTeamWork.Device;
@@ -23,7 +17,6 @@ namespace _2016RPGTeamWork.GameObjects
     {
         private Motion motion;
         private Vector2 position;
-        private Vector2 scollPosition;
         private Vector2 battlePosition; //by柏　戦闘用追加
         private Vector2 direction;   //by柏　移動用追加
         private InputState input;
@@ -67,16 +60,33 @@ namespace _2016RPGTeamWork.GameObjects
             motion.Update(); 
         }
 
-        public bool Collision() {
-            int x = (int)position.X / Parameter.TileSize;
-            int y = (int)position.Y / Parameter.TileSize;
-            for (int j = y - 1; j <= y + 1; j++) {
-                for (int i = x - 1; i <= x + 1; i++) {
-                    if (mapData[i, j] < 0) {
-                        Rectangle other = new Rectangle(
-                            i * Parameter.TileSize, j * Parameter.TileSize,
-                            Parameter.TileSize, Parameter.TileSize);
-                        if (Method.IsCollision(GetRect(), other)) { return true; }
+        /// <summary>
+        /// マップとのあたり判定　by柏　2017.1.14
+        /// </summary>
+        /// <param name="direction">移動方向取得</param>
+        /// <returns></returns>
+        public bool Collision(Vector2 direction) {
+            int size = Parameter.TileSize;
+            Vector2 velocity = direction * Parameter.PlayerSpeed;
+            Vector2 centerOffset = new Vector2(Parameter.TileSize / 2, Parameter.TileSize / 2);
+            Vector2 mapXY = Method.GetMapXY(position + centerOffset);
+            int otherX = (int)mapXY.X + (int)direction.X;
+            int otherY = (int)mapXY.Y + (int)direction.Y;
+
+            if (!Method.IsInStage(otherX, otherY, mapData)) { return true ; }
+            if (direction.X != 0) {
+                for (int i = otherY - 1; i <= otherY + 1; i++) {
+                    if (mapData[i, otherX] > 0) {
+                        Rectangle other = new Rectangle(otherX * size, i * size, size, size);
+                        if (Method.IsCollision(GetRect(position + velocity), other)) { return true; }
+                    }
+                }
+            }
+            else if (direction.Y != 0) {
+                for (int i = otherX - 1; i <= otherX + 1; i++) {
+                    if (mapData[otherY, i] > 0) {
+                        Rectangle other = new Rectangle(i * size, otherY * size, size, size);
+                        if (Method.IsCollision(GetRect(velocity + position), other)) { return true; }
                     }
                 }
             }
@@ -94,18 +104,17 @@ namespace _2016RPGTeamWork.GameObjects
         /// </summary>
         /// <param name="keyState">キーボード入力</param>
         private void Move(KeyboardState keyState) {
-            if (Collision()) { return; }
             if (keyState.IsKeyDown(Keys.Right)) {
-                direction = new Vector2(1, 0);
+                direction = Collision(new Vector2( 1, 0)) ? Vector2.Zero : new Vector2( 1, 0);
             }
             else if (keyState.IsKeyDown(Keys.Left)) {
-                direction = new Vector2(-1, 0);
+                direction = Collision(new Vector2(-1, 0)) ? Vector2.Zero : new Vector2(-1, 0);
             }
             else if (keyState.IsKeyDown(Keys.Up)) {
-                direction = new Vector2(0, -1);
+                direction = Collision(new Vector2(0, -1)) ? Vector2.Zero : new Vector2(0, -1);
             }
             else if (keyState.IsKeyDown(Keys.Down)) {
-                direction = new Vector2(0, 1);
+                direction = Collision(new Vector2(0,  1)) ? Vector2.Zero : new Vector2(0,  1);
             }
             else { direction = Vector2.Zero; }
             position += direction * Parameter.PlayerSpeed;
@@ -129,25 +138,13 @@ namespace _2016RPGTeamWork.GameObjects
         /// <summary>
         /// 描画
         /// </summary>
-        public void Draw(Renderer renderer, Vector2 offset)
+        public override void Draw(Renderer renderer, Vector2 offset)
         {
             if (isBattle) {
                 renderer.DrawTexture("player1", battlePosition, motion.DrawRange());
                 return;
             }
             renderer.DrawTexture("player1", position + offset, motion.DrawRange());
-        }
-
-        /// <summary>
-        /// 描画
-        /// </summary>
-        public override void Draw(Renderer renderer) {
-            Vector2 centerOffset = Parameter.CharaCenterOffset;
-            if (isBattle) {
-                renderer.DrawTexture("player1", battlePosition + centerOffset, motion.DrawRange());
-                return;
-            }
-            renderer.DrawTexture("player1", position + centerOffset, motion.DrawRange());
         }
 
         /// <summary>
@@ -168,9 +165,8 @@ namespace _2016RPGTeamWork.GameObjects
         /// 位置の取得　by柏　2017.1.10
         /// </summary>
         public Vector2 Position { get { return position; } }
-        public Vector2 Direction {
-            get { return direction; }
-        }
+
+        public Vector2 GetDirection { get { return direction; } }
 
         public void SetMapData(int[,] mapData) {
             this.mapData = mapData;

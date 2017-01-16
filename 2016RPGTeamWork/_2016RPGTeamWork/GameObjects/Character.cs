@@ -42,7 +42,18 @@ namespace _2016RPGTeamWork.GameObjects
         protected bool isEscape;      //逃走フラグ    2017.1.9 by柏
         protected bool isDefence;     //防御フラグ    2017.1.9 by柏
         protected static Random rnd = new Random();     //2017.1.9 by柏
+        protected int initiativePoints=0; //2017年1月15日（ホームズ）イニチアチブポイント
         protected Vector2 position;   //Charaの位置(画像の中心)   2017.1.11 by柏
+
+        public int InitiativePoints
+        {
+            get { return initiativePoints; }
+            set
+            {
+                initiativePoints = value;
+                IpClip();
+            }
+        }
 
         public Character(CharacterInfo ci)
         {
@@ -122,6 +133,14 @@ namespace _2016RPGTeamWork.GameObjects
         {
             if (mp > GetMaxMP) mp = GetMaxMP;
             else if (mp < 0) mp = 0;
+        }
+
+        /// <summary>
+        /// イニチアチブポイントがマイナスの値にならないようにするメソッド（ホームズ、2017年1月15日）
+        /// </summary>
+        private void IpClip()
+        {
+            if (initiativePoints < 0) initiativePoints = 0;
         }
 
         public int GetMaxHP { get { return characterInfo.MaxHP; } }

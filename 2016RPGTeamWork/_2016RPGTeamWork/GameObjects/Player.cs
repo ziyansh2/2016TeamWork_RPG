@@ -95,8 +95,12 @@ namespace _2016RPGTeamWork.GameObjects
 
 
         //by柏　戦闘　2017.1.10
-        public void Battle() {
+        public void Battle(Scene.Battle b) {
+            //2017年1月12日（ホームズ）
 
+            //List<Enemy> enemyList = b.EnemyManager.GetEnemyList();
+            //if (enemyList.Count == 0) return;
+            //不要かな…？
         }
 
         /// <summary>

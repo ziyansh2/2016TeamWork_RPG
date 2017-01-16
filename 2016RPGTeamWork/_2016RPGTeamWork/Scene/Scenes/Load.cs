@@ -1,9 +1,9 @@
 ﻿///作成日：2016.12.19
 ///作成者：柏
 ///作成内容：ロードシーン
-///最後修正内容：player,enemyリソース追加
-///最後修正者：柏
-///最後修正日：2017.1.8
+///最後修正内容：Player 2の画像の追加
+///最後修正者：ホームズ
+///最後修正日：2017.1.12
 
 using _2016RPGTeamWork.Device;
 using Microsoft.Xna.Framework;
@@ -31,6 +31,7 @@ namespace _2016RPGTeamWork.Scene
                 { "puddle", path },
                 { "mapsource", path },  //2016.12.20 by柏 maptip描画テスト追加
                 { "player1", path},  //2017.1.8 by柏 playerリソース追加
+                { "player2", path},  //2017.1.12 by Holmes.
                 { "enemy", path},  //2017.1.8 by柏 enemy描画テスト追加
             };
             return list;

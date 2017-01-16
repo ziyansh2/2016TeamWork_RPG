@@ -127,6 +127,12 @@ namespace _2016RPGTeamWork.GameObjects.EnemyManagers
             enemyList.ForEach(e => e.GetPlayerList(players));
         }
 
+        //2017年1月12日（ホームズ）
+        public List<Enemy> GetEnemyList()
+        {
+            return enemyList;
+        }
+
         /// <summary>
         /// エネミーのタイプによって、初期値取得 by柏 2017.1.9
         /// </summary>

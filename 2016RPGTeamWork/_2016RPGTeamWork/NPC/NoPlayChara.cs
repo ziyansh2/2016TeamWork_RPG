@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 
 using _2016RPGTeamWork.Utility;
 using _2016RPGTeamWork.Device;
+using _2016RPGTeamWork.Def;
 
 namespace _2016RPGTeamWork.NPC
 {
@@ -19,11 +20,16 @@ namespace _2016RPGTeamWork.NPC
         private Vector2 startPosition;
         private Motion motion;      //アニメーション用
         private MoveAble moveAble;   //移動パタン（移動無、左右、上下など）
+        private bool isMove;
+        private Timer reStartMove;
 
         public NoPlayChara(Vector2 position, Range dialogueCor, MoveAble moveAble) {
             this.dialogueCor = dialogueCor;
             startPosition = position;
             this.moveAble = moveAble;
+            reStartMove = new Timer(1.0f);
+            reStartMove.SetCurrentTime(1.0f);
+            isMove = true;
         }
 
         /// <summary>
@@ -45,8 +51,12 @@ namespace _2016RPGTeamWork.NPC
         /// </summary>
         public void Update() {
             motion.Update();    //アニメーション更新
-            position += moveAble.GetVelocity;
-            moveAble.Move();
+            reStartMove.Update();
+
+            if (!isMove) { return; }
+            if (reStartMove.IsTime) {
+                position += moveAble.Move();
+            }
         }
 
         /// <summary>
@@ -57,5 +67,26 @@ namespace _2016RPGTeamWork.NPC
             renderer.DrawTexture("puddle", position + offset, motion.DrawRange());
         }
 
+        public Rectangle GetRect(Vector2 offset) {
+            int x = (int)(position.X + offset.X);
+            int y = (int)(position.Y + offset.Y);
+            Rectangle thisRect = new Rectangle(x, y, Parameter.TileSize, Parameter.TileSize);
+            return thisRect;
+        }
+
+        public bool IsMove {
+            set {
+                if (isMove == value) { return; }
+                if (value == true) { reStartMove.Initialize(); }
+                isMove = value;
+            }
+        }
+
+        public Vector2 Velocity {
+            get { return moveAble.Velocity; }
+        }
+        public Vector2 Position {
+            get { return position; }
+        }
     }
 }

@@ -89,6 +89,7 @@ namespace _2016RPGTeamWork.Scene
         /// 更新
         /// </summary>
         public void Update() {
+            //戦闘終了　by柏
             if (input.IsKeyDown(Keys.Z)) {
                 enemyManager.ClearEnemyList();
                 gamePlay.IsBattle = false;
@@ -96,6 +97,7 @@ namespace _2016RPGTeamWork.Scene
                 players.ForEach(n => ((Player)n).IsBattle = false);
             }
 
+            //戦闘選択処理　byホンムズ
             if (im == InputMode.ActionSelect)
             {
                 if (input.IsKeyDown(Keys.Right))

@@ -118,7 +118,7 @@ namespace _2016RPGTeamWork.Scene
             for (int j = (int)scaleMin.Y; j < (int)scaleMax.Y; j++) {
                 for (int i = (int)scaleMin.X; i < (int)scaleMax.X; i++) {
                     if (!Method.IsInStage(i, j, mapData)) { continue; }
-                    Rectangle rect = new Rectangle((mapData[j, i] % 4) * size, (mapData[j, i] / 4) * size, size, size);
+                    Rectangle rect = new Rectangle((mapData[j, i] % 24) * size, (mapData[j, i] / 24) * size, size, size);
                     renderer.DrawTexture("mapsource", new Vector2(i * size, j * size) + offset, rect);
                 }
             }
@@ -142,9 +142,9 @@ namespace _2016RPGTeamWork.Scene
         /// <returns></returns>
         private Vector2 GetViewScale() {
             int size = Parameter.TileSize;
-            int screenHalfW = Parameter.ScreenWidth / size / 2;
-            int screenHalfH = Parameter.ScreenHeight / size / 2;
-            return new Vector2(screenHalfW, screenHalfH);   //範囲はスクリーンの半分
+            int screenHalfW = Parameter.ScreenWidth / size;
+            int screenHalfH = Parameter.ScreenHeight / size;
+            return new Vector2(screenHalfW, screenHalfH);   //範囲はスクリーン
         }
         
         /// <summary>

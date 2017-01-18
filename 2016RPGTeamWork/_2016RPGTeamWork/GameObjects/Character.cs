@@ -43,7 +43,7 @@ namespace _2016RPGTeamWork.GameObjects
         protected bool isDefence;     //防御フラグ    2017.1.9 by柏
         protected static Random rnd = new Random();     //2017.1.9 by柏
         protected int initiativePoints=0; //2017年1月15日（ホームズ）イニチアチブポイント
-        protected Vector2 position;   //Charaの位置(画像の中心)   2017.1.11 by柏
+        protected Vector2 position;   //Charaの位置   2017.1.11 by柏
 
         public int InitiativePoints
         {

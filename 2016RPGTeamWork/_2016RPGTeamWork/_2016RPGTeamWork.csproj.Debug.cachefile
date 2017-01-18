@@ -1,9 +1,10 @@
 Content\Texture\gameplay.xnb
 Content\Texture\title.xnb
 Content\Texture\load.xnb
+Content\SE\title.xnb
+Content\BGM\title.xnb
 Content\Texture\battle.xnb
 Content\Texture\puddle.xnb
-Content\Texture\enemy.xnb
 Content\Texture\player1.xnb
 Content\Texture\mapsource.xnb
 Content\Texture\player2.xnb
@@ -11,6 +12,9 @@ Content\SE\title.xnb
 Content\BGM\title.xnb
 Content\Font\ＭＳ Ｐゴシック.xnb
 Content\Font\HGS行書体.xnb
+Content\Texture\enemy.xnb
+Content\Texture\player1.xnb
+Content\Texture\player2.xnb
 Content\BGM\title.wma
 Content\CSV\dialogueCor_Text.csv
 Content\CSV\Enemy.csv

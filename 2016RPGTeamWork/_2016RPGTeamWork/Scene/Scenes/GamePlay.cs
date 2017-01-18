@@ -14,6 +14,7 @@ using _2016RPGTeamWork.Device;
 using _2016RPGTeamWork.Utility;
 using _2016RPGTeamWork.NPC;
 using _2016RPGTeamWork.GameObjects;
+using _2016RPGTeamWork.Def;
 
 namespace _2016RPGTeamWork.Scene
 {
@@ -55,8 +56,11 @@ namespace _2016RPGTeamWork.Scene
             writer.Initialize();    //2016.12.25 by柏　文字改行表示
             npcList = stage.GetNPC;
             npcList.ForEach(n => n.Initialize());
-            players.ForEach(n => n.Initialize());
-            players.ForEach(n => ((Player)n).SetMapData(stage.GetMapData()));
+            players.ForEach(n => {
+                n.Initialize();
+                ((Player)n).SetMapData(stage.GetMapData());
+                ((Player)n).SetNPC(npcList);
+            });
             camera.SetStage(stage);
 
             endFlag = false;
@@ -70,8 +74,9 @@ namespace _2016RPGTeamWork.Scene
         /// </summary>
         public void Update() {
             GameInput();
-            players.ForEach(n => n.Update());
             npcList.ForEach(n => n.Update());
+            players.ForEach(n => n.Update());
+            
 
             if (players.Count == 0) { return; }
             stage.SetPlayerPosition(player1.Position);

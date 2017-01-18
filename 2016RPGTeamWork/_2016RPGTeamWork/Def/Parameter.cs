@@ -23,7 +23,7 @@ namespace _2016RPGTeamWork.Def
         public const int TalkTextWidth = 20;
 
         public const int NPCSpeed = 2;  //2016.1.8 by柏 npc速度調整
-        public const int PlayerSpeed = 2; //2016.1.10 by柏 player速度追加
+        public const int PlayerSpeed = 4; //2016.1.10 by柏 player速度追加(あたり判定に合わせて64の約数にする)
 
         //2016.1.10 by柏 描画中心を調整するため
         public static readonly Vector2 CharaCenterOffset = new Vector2(-TileSize / 2, -TileSize / 2);

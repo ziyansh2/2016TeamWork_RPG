@@ -32,7 +32,7 @@ namespace _2016RPGTeamWork.NPC
             velocity *= -1;
         }
 
-        public Vector2 GetVelocity {
+        public Vector2 Velocity {
             get { return velocity; }
         }
     }
